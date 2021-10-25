@@ -20,6 +20,7 @@ urlpatterns += i18n_patterns(
     path('services/', include('services.urls', namespace='services')),
     path('summernote/', include('django_summernote.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
+    path('chat/', include('chatrooms.urls')),
     path('tinymce/', include('tinymce.urls')),
     url(r'^robots\.txt', include('robots.urls')),
     re_path(r'^rosetta/', include('rosetta.urls'))
