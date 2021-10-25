@@ -1,0 +1,164 @@
+ 
+    {% extends "../base/base.html" %}
+    {% block title %}
+    all post {{ user.username }}
+    {% endblock %}
+    {% block metaHead %}
+    {{form.media}}
+      
+    {% endblock metaHead %}
+    {% block content %}
+    {% include "base/nav-main.html" %}
+
+
+    <div class="row">
+      
+<div class="col-md-2">
+   
+</div>  
+
+{% load bootstrap4 %}
+<div class="form-container col-md-9">
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="form__section-title">{{ title }}</h1>
+    </div>
+    <div class="col-md-12">
+        {% bootstrap_messages %}
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}  
+
+<!-- fields = ['category','video_or_article','title', 'content','image','status','excerpt','tags','slug'] -->
+
+    
+  {{ form.non_field_errors }}
+
+  {{ form.source.errors }}
+  {{ form.source }}
+<div class="row">
+  <div class="col-md-8">
+    
+      {{ form.title.label_tag }} 
+        {{ form.title.errors }}
+        {{ form.title }}
+        <br>
+      {{ form.content.label_tag }} 
+        {{ form.content.errors }}
+        {{ form.content }} <br>
+ <div id="video_url">
+  {{ form.video_url.label_tag }} 
+  {{ form.video_url.errors  }}
+  {{ form.video_url }} 
+  <script>
+   let v = document.getElementById('id_video_url').value ;
+    if (v.length  < 5 ) {
+      document.getElementById('video_url').style.display = 'none';
+    }
+  </script>
+
+ </div>
+
+  </div>
+  <div class="col-md-4">
+
+    <button type="submit" class="read-more">Submit</button>
+  <table border="0">
+ 
+    <tr>
+      <th>{{ form.category.label_tag }}</th>
+      <td>
+        {{ form.category.errors }}
+        {{ form.category }}
+      </td>
+    </tr>
+    <tr>
+      <th>{{ form.video_or_article.label_tag }}</th>
+      <td>
+        {{ form.video_or_article.errors }}
+        {{ form.video_or_article }}
+      </td>
+    </tr>
+    <tr>
+      <th>{{ form.status.label_tag }}</th>
+      <td>
+        {{ form.status.errors }}
+        {{ form.status }}
+      </td>
+    </tr>
+
+    <tr>
+      <th>{{ form.excerpt.label_tag }}</th>
+      <td>
+        {{ form.excerpt.errors }}
+        {{ form.excerpt }}
+      </td>
+    </tr>
+    <tr>
+      <th>{{ form.slug.label_tag }}</th>
+      <td>
+        {{ form.slug.errors }}
+        {{ form.slug }}
+      </td>
+      <tr class="d-none">
+        <th>{{ form.video_duration.label_tag }}</th>
+        <td>
+          {{ form.video_duration.errors }}
+          {{ form.video_duration }}
+        </td>
+      </tr>
+    </tr> 
+    <tr>
+      <th>{{ form.image.label_tag }}</th>
+      <td>
+        <!--  check for input type -->
+        {% if form.image.field.widget.input_type == 'file'%}
+        <!-- <a href="{{ MEDIA_URL }}{{ form.image.value }}">{{ form.image.value }}</a><br/> -->
+        <input type="file" name="{{ form.image.name }}" onchange="upload_img(this);" />
+    {% endif %} 
+            <img id="img_id" src="/media/{{ form.image.value }}" width="222px" class="read-more" />
+            <script type="text/javascript">
+        
+        
+              function upload_img(input) {
+                  if (input.files && input.files[0]) {
+                      var reader = new FileReader();
+        
+                      reader.onload = function (e) {
+                          $('#img_id').attr('src', e.target.result);
+                      }
+        
+                      reader.readAsDataURL(input.files[0]);
+                  }
+              }
+        
+          </script>
+      </td>
+    </tr>
+
+
+    <tr>
+      <th>{{ form.message.label_tag }}</th>
+      <td>
+        {{ form.message.errors }}
+        {{ form.message }}
+        <br />
+        {{ form.message.help_text }}
+      </td>
+    </tr>
+
+</table>
+
+  </div>
+</div>
+
+        </form>
+    </div>
+</div> 
+<style>
+  .ql-editor {
+  direction: rtl;
+  text-align: right;
+}
+</style>
+{% include "base/footer.html" %}
+{% endblock content %}

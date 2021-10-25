@@ -1,0 +1,237 @@
+{% extends "../base/base.html" %}
+{% block title %}Edit your account{% endblock %}
+{% block content %}
+{% load i18n %}
+{% include "base/nav-main.html" %}
+<style>
+    .update-form input {
+        border: 2px solid #ccc;
+        height: calc(2em + .75rem + 2px);
+    }
+
+    .update-form input:focus {
+        border-color: #1497ff;
+        box-shadow: inset 0 0px 0px rgba(0, 0, 0, 0.075), 0 0 0px rgba(255, 0, 0, 0.6);
+    }
+</style>
+
+<div class="container-fluid my-5">
+    <section class="px-md-5 mx-md-5 text-center text-lg-left dark-grey-text">
+        <div class="row d-flex justify-content-center">
+            <div style="direction: ltr;" >
+
+                <form class="form-reset p-4   update-form" method="post" enctype="multipart/form-data">
+
+                    {% csrf_token %} 
+ 
+
+
+
+<div class="container-fluid mt--7">
+  <div class="row">
+    <div class="col-xl-4 order-xl-2 mb-5 mb-xl-0">
+      <div class="card card-profile shadow">
+        <div class="row justify-content-center">
+          <div class="col-lg-3 order-lg-2">
+            <div class="card-profile-image">
+              <a href="#">
+                <img src="{{request.user.profile.avatar.url }}" class="rounded-circle" width="82px">
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="card-header text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
+          <div class="text-center justify-content-between">
+            <i class="ni business_briefcase-24 mr-2"></i>{{request.user.profile.fullName }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-8 order-xl-1">
+      <div class="card  shadow text-center">
+        <div class="card-header bg-white border-0">
+          <div class="row align-items-center">
+            <div class="col-8">
+              {% if user_form.is_valid and profile_form.is_valid  %}
+              <div class="alert alert-primary" role="alert">
+                {% trans 'تم تحديث التفاصيل بنجاح' %}
+              </div>
+              <p class="small text-center pt-0">
+                  <a href="{% url "accounts:profile" %}">{% trans 'رجوع إلى لوحة القيادة' %}</a>
+              </p>
+              {%else%}
+              <p class = "h4 mb-4 font-weight-bold"> تغيير التفاصيل </p>
+                  <p> {% trans 'يمكنك تعديل حسابك باستخدام النموذج التالي: ' %}</p>
+              {% endif %}
+
+              {% if form.errors %}
+              <div class="alert alert-primary" role="alert">
+                  Error: Please try again!
+              </div>
+              {% endif %}
+
+              {% if profile_form.errors %}
+              <!-- <div class="alert alert-primary" role="alert">
+                  خطأ: حجم الملف غير صحيح - يجب أن يكون 100 × 100 بكسل                    </div> -->
+              {% endif %}
+
+            </div>
+            <div class="col-4 text-right">
+              
+              <button class="btn btn-primary btn-block py-2 mb-4 mt-5 font-weight-bold" type="submit"
+              value="Save changes">{% trans 'حفظ التغييرات' %}</button>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <form>
+            <h6 class="heading-small text-muted mb-4">{% trans 'User information' %}</h6>
+            <div class="pl-lg-4">
+              <div class="row">
+                <div class="col-lg-6">
+                  <div class="form-group focused">
+                    <label class="form-control-label" for="input-username">{% trans 'الاسم بلكمل' %}</label>
+                    {{ profile_form.fullName.errors }}
+                    {{ profile_form.fullName }}
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="form-control-label" for="input-email">{% trans 'بريد الالكتروني' %}</label>
+                    {{ user_form.email.errors }}
+                    {{ user_form.email }}
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-6">
+                  <div class="form-group focused">
+                    <label class="form-control-label" for="input-first-name">{% trans 'الاسم الاول' %}</label>
+                    {{ user_form.first_name.errors }}
+                    {{ user_form.first_name }}
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="form-group focused">
+                    <label class="form-control-label" for="input-last-name">{% trans 'اسم العائلة' %}</label>
+                    {{ user_form.last_name.errors }}
+                    {{ user_form.last_name }}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr class="my-4">
+            <!-- Address -->
+            <h6 class="heading-small text-muted mb-4">{% trans 'Contact information' %}</h6>
+            <div class="pl-lg-4"> 
+              <div class="row"> 
+                <div class="col-lg-4">
+                  <div class="form-group focused">
+
+
+                    <label class="small font-weight-bold">{{ profile_form.avatar.label}}</label>
+                    {{ profile_form.avatar}}
+                  </div>
+                </div>
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    
+          {{ form.message.errors }}
+          {{ form.message }}
+          <br />
+          {{ form.message.help_text }}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Description -->
+            <h6 class="heading-small text-muted mb-4">{% trans 'السيرة الذاتية' %}</h6>
+            <div class="pl-lg-4">
+              <div class="form-group focused">
+                {{ profile_form.bio.errors }}
+                {{ profile_form.bio }}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-4">
+                <div class="form-group focused">
+                  <label class="small font-weight-bold"><a href="{% url 'blog:homepage' %}@{{ profile_form.slug.value}}">{{request.get_host}}/@{{ profile_form.slug.value}}</a></label>
+                  {{ profile_form.slug}}
+                </div>
+              </div>
+              <div class="col-lg-4">
+                <div class="form-group focused">
+
+
+                  <label class="small font-weight-bold">{{ profile_form.twitter.label}}</label>
+                  {{ profile_form.twitter}}
+                </div>
+              </div>
+              <div class="col-lg-4">
+                <div class="form-group focused">
+
+
+                  <label class="small font-weight-bold">{{ profile_form.facebook.label}}</label>
+                  {{ profile_form.facebook}}
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<style>
+
+p,button{
+      
+      padding: 7px 20px; 
+      font-size: 15px;
+      background: #ffffff;
+      color: #000000;
+      box-shadow: 0px 10px 20px -10px #1376c5;
+      border-radius: 25px;
+      text-transform: uppercase;
+      }
+input,textarea {
+      overflow: visible;
+      background: #ffffff; 
+      border-radius: 24px;
+      border-width: 0px;
+      font-size: 20px;
+      box-shadow: 0px 10px 20px -10px #1376c5;
+  }
+  label  {
+      overflow: visible;
+      background: #f0f2f5; 
+      border-radius: 24px;
+      border-width: 0px;
+      font-size: 14px;
+      box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+  }
+</style>
+
+                    <!-- <hr class="mb-3">
+                    <p class=" h5 mb-2 pt-4 font-weight-bold">Delete Account</p>
+                    <p class="small">If you would like to delete your account press the button below:</p>
+                    <a href="{% url "accounts:deleteuser" %}"
+                        class="btn btn-danger btn-block py-2 mb-4 mt-5 font-weight-bold" role="button"
+                        aria-pressed="true">Delete Account</a> -->
+                </form>
+
+            </div>
+        </div>
+    </section>
+</div>
+
+
+
+
+
+
+
+
+
+{% include "base/footer.html" %}
+{% endblock %}

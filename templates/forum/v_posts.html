@@ -1,0 +1,56 @@
+ 
+
+    <div class="row justify-content-center"  >
+  
+        <div class="  read-more text-center " style="font-size: 22px; width: 100%;">الأكثر قراءة</div>
+        {% for post in l_posts %}  
+       <div class="rowd">
+        
+        <img class="read-more " src="{{post.image.url}}" width="100px" height="60px">
+         <a class=" w-50 mt-2 read-more" href="{{post.get_absolute_url}}" styled="padding: 0px;">
+        
+    {% if post.title|length > 40 %}
+    {{post.title|slice:'35'}} ..
+    {% else %}
+    {{post.title}}
+    {% endif %}
+        </a> 
+       </div>
+        {% endfor %}
+    </div> 
+
+ 
+
+
+
+
+
+
+<!-- 
+
+    <div class="row justify-content-center"  >
+  
+        <div class="  read-more text-center " style="font-size: 22px; width: 100%;">الأكثر قراءة</div>
+        {% for post in l_posts %}  
+       <div>
+           
+        <div class="col-md-5 mt-2 "><img class="bg-light  shadow-lg" src="{{post.image.url}}" width="100px" height="60px"></div>
+        <div class="col-md-7 mt-2 read-more"><a class="nav-link" href="{{post.get_absolute_url}}" style="padding: 0px;"><span class="fontd">
+          
+    {% if post.title|length > 40 %}
+    {{post.title|slice:'35'}} ..
+    {% else %}
+    {{post.title}}
+    {% endif %}
+        </span></a></div>
+        
+       </div>
+        {% endfor %}
+    </div> 
+
+
+       <style>
+           .block div{
+               display: inline-block;
+           }
+       </style> -->

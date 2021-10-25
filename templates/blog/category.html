@@ -1,0 +1,536 @@
+{% extends "../base/base.html" %}
+{% load static  %}
+
+{% block title %} {{ instance.name }} {% endblock %}
+
+{% block content %}
+{% load post_tag %}
+{% load i18n %}
+
+{% include "base/nav-main.html" %}
+<div class="container-fluid">
+
+
+<nav aria-label="breadcrumb ">
+    
+  <ol class="breadcrumb fontd shadow" itemscope itemtype="https://schema.org/BreadcrumbList">
+    <li class="breadcrumb-item read-more" itemprop="itemListElement" itemscope
+        itemtype="https://schema.org/ListItem">
+      <a itemprop="item" href="https://www.{{ request.get_host }}">
+          <span itemprop="name">🏠 الرسمية</span></a>
+      <meta itemprop="position" content="1" />
+    </li>
+
+    {% for i,v in instance.get_slug_list_for_categories.items %}
+
+<li class="breadcrumb-item read-more fontd" itemprop="itemListElement" itemscope  itemtype="https://schema.org/ListItem">
+<a itemscope itemtype="https://schema.org/WebPage"  itemprop="item" itemid="/a/{{ i }}" href="/a/{{ i }}">
+ <span itemprop="name">{{ v | get_name }}  </span></a>
+<meta itemprop="position" content="{{ forloop.counter|add:'1' }}" /> </li> 
+{% endfor %}
+
+  </ol>
+</nav>  
+
+</div>
+     
+
+<!-- 
+    {% if  instance.children.all %}
+        <div class="row justify-content-center">
+        {% for i in instance.children.all %}
+
+            <a href="{{ i.slug }}" class="col-md-3 m-2 " >  
+              <img src="{{ i.image.url }}" class="card-img rounded-pill read-more" alt="{{ i.name }}"  style=" height: 100px; filter: blur(9px);">
+              <div class="card-img-overlay justify-content-center">
+                <h5 class="  rounded mx-auto d-block read-more" style="color: #28a745; font-weight: bolder;">{{ i.name }}</h5>
+            </div>  </a> 
+        {% endfor %}
+      </div>
+    {% endif %} 
+  -->
+
+
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-9 m-auto">
+          <div class="section-header text-center">
+            <div class="h2">  {{instance.name}} </div>
+          </div>
+          <div class="row justify-content-center">
+
+            {% if  instance.children.all %}
+            {% for i in instance.children.all %}
+            <a href="{{ i.slug }}" class="col-lg-4 mb-3">
+              <div class="card text-center doctor-book-card">
+                <img src="{{ i.image.url }}" alt="" class="img-fluid ">
+                <div class="doctor-book-card-content tile-card-content-1">
+                  <div>
+                  <h3 class="card-title mb-0">{{ i.name }}</h3> 
+                  </div>
+                </div>
+              </div>
+            </a>
+        {% endfor %}
+        {% endif %}
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+          
+<style>
+  
+.book-btn1:hover{
+	background-color: #01cae4;
+	border-color: #01cae4;
+	color: #ffffff;
+}
+.doctor-book-card {
+	position: relative;
+	max-width: 100%;
+	margin: 0 auto;
+	overflow: hidden; 
+  box-shadow: 0px 9px 35px #007bff; 
+}
+.doctor-book-card img {
+	vertical-align: middle;
+	border-radius: .25rem;
+	transition: all 2000ms cubic-bezier(.19,1,.22,1) 0ms;
+  height: 123px;
+
+}
+.doctor-book-card:hover img{
+	-webkit-transform: scale(1.15);
+    -moz-transform: scale(1.15);
+    transform: scale(1.15);
+}
+.doctor-book-card-content {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	-webkit-transform: translate(-50%, -50%);
+	-ms-transform: translate(-50%, -50%);
+	color: #f1f1f1;
+	width: 100%;
+	padding: 20px;
+	height:100%;
+	border-radius: .25rem;
+}
+.doctor-book-card-content > div{
+	width: 100%;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	-webkit-transform: translate(-50%, -50%);
+	-ms-transform: translate(-50%, -50%);
+}
+.doctor-book-card-content .book-btn1{
+	font-size: 14px;
+} 
+.tile-card-content-1 {
+    background: rgb(0, 0, 0);
+    background: rgba(13, 13, 13, 0.33);
+}
+</style>
+
+
+
+
+  </div>
+
+
+
+
+
+    
+  <div class="album py-5 fontd">
+ 
+
+
+    <!-- <style>
+      
+      .card.shadow {
+          border-radius: 56px;
+      }
+      #news-slider{
+          margin-top: 80px;
+      }
+      .post-slide{
+          background: #fff;
+          margin: 20px 15px 20px;
+          border-radius: 15px;
+          padding-top: 1px;
+          box-shadow: 0px 14px 22px -9px #bbcbd8;
+      }
+      .post-slide .post-img{
+          position: relative;
+          overflow: hidden;
+          border-radius: 10px;
+          margin: -12px 15px 8px 15px;
+          margin-left: -10px;
+          height: 222px;
+      }
+      .post-slide .post-img img{
+          width: 100%;
+          height: auto;
+          transform: scale(1,1);
+          transition:transform 0.2s linear;
+      }
+      .post-slide:hover .post-img img{
+          transform: scale(1.1,1.1);
+      }
+      .post-slide .over-layer{
+          width:100%;
+          height:100%;
+          position: absolute;
+          top:0;
+          left:0;
+          opacity:0;
+          background: linear-gradient(-45deg, rgba(6,190,244,0.75) 0%, rgba(45,112,253,0.6) 100%);
+          transition:all 0.50s linear;
+      }
+      .post-slide:hover .over-layer{
+          opacity:1;
+          text-decoration:none;
+      }
+      .post-slide .over-layer i{
+          position: relative;
+          top:45%;
+          text-align:center;
+          display: block;
+          color:#fff;
+          font-size:25px;
+      }
+      .post-slide .post-content{
+          background:#fff;
+          padding: 2px 20px 40px;
+          border-radius: 15px;
+      }
+      .post-slide .post-title a{
+          font-size:15px;
+          font-weight:bold;
+          color:#333;
+          display: inline-block;
+          text-transform:uppercase;
+          transition: all 0.3s ease 0s;
+      }
+      .post-slide .post-title a:hover{
+          text-decoration: none;
+          color:#3498db;
+      }
+      .post-slide .post-description{
+          line-height:24px;
+          color:#808080;
+          margin-bottom:25px;
+      }
+      .post-slide .post-date{
+          color:#a9a9a9;
+          font-size: 14px;
+      }
+      .post-slide .post-date i{
+          font-size:20px;
+          margin-right:8px;
+          color: #CFDACE;
+      }
+      .read-more{
+          padding: 7px 20px;
+          float: right;
+          font-size: 12px;
+          background: #ffffff;
+          color: #000000;
+          box-shadow: 0px 10px 20px -10px #1376c5;
+          border-radius: 25px;
+          text-transform: uppercase;
+      }
+      .post-slide .read-more:hover{
+          background: #3498db;
+          text-decoration:none;
+          color:#fff;
+      }
+      .owl-controls .owl-buttons{
+          text-align:center;
+          margin-top:20px;
+      }
+      .owl-controls .owl-buttons .owl-prev{
+          background: #fff;
+          position: absolute;
+          top:-13%;
+          left:15px;
+          padding: 0 18px 0 15px;
+          border-radius: 50px;
+          box-shadow: 3px 14px 25px -10px #92b4d0;
+          transition: background 0.5s ease 0s;
+      }
+      .owl-controls .owl-buttons .owl-next{
+          background: #fff;
+          position: absolute;
+          top:-13%;
+          right: 15px;
+          padding: 0 15px 0 18px;
+          border-radius: 50px;
+          box-shadow: -3px 14px 25px -10px #92b4d0;
+          transition: background 0.5s ease 0s;
+      }
+      .owl-controls .owl-buttons .owl-prev:after,
+      .owl-controls .owl-buttons .owl-next:after{
+          content:"\f104";
+          font-family: FontAwesome;
+          color: #333;
+          font-size:30px;
+      }
+      .owl-controls .owl-buttons .owl-next:after{
+          content:"\f105";
+      }
+      @media only screen and (max-width:1280px) {
+          .post-slide .post-content{
+              padding: 0px 15px 25px 15px;
+          }
+      }
+      </style> -->
+    
+    <script>
+      
+      $(document).ready(function() {
+          $("#news-slider").owlCarousel({
+            loop:false,
+        stagePadding: 20,
+          margin:20,
+          nav:true,
+        navText : ['<span class="icon left">‹</span>','<span class="icon right">›</span>'],
+          responsive:{
+              0:{
+                  items:1
+              },
+              640:{
+                  items:2
+              },
+            960:{
+                  items:3
+              },
+              1200:{
+                  items:3
+              }
+          }
+          });
+      });
+      </script>
+    
+    
+    {% load mptt_tags %} 
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-md-1">
+        
+                {% load mptt_tags %} 
+              </div>
+              <div class="col-md-8">
+                <div class="row justify-content-center">
+              <div class="col-12 pb-1 text-center read-more">
+                <h1>  {{instance.name}} </h1>
+              </div>
+
+
+
+
+              <div class="col-md-12 pt-1" style="direction: ltr;">
+                <div class="col"> {{instance.excerpt}} </div>
+                <div class="row justify-content-center">
+                  <!-- <div class="col-1 read-more" style="font-size: 31px;">
+                    <a class="fab fa-facebook" href="http://www.facebook.com/sharer.php?u={{request.build_absolute_uri}} "  onclick="window.open(this.href, 'facebookwindow','left=20,top=20,width=600,height=700,toolbar=0,resizable=1'); return false;"> </a>
+                    <a class="fab fa-twitter" href="http://twitter.com/intent/tweet?text={{ instance.name }} {{request.build_absolute_uri}}" onclick="window.open(this.href, 'twitterwindow','left=20,top=20,width=600,height=300,toolbar=0,resizable=1'); return false;"> </a>
+                    <a  class="fab fa-whatsapp"href="whatsapp://send?text={{ instance.name }} {{request.build_absolute_uri}}" data-action="share/whatsapp/share"> </a>
+          
+                  </div> -->
+                  <div class="col-10">
+                <img class="card-img-top read-more p-0" height="300px" src="{{instance.image.url}}" alt="{{ instance.name }}">
+                  </div>
+                </div>
+          
+           
+                <div id="go1" class=" row mt-6" style="font-size: 20px; direction: rtl;">
+                  <strong class="md:text-xl text-base mb-3" id="co"> </strong> 
+                <div id="go"></div>
+                </div>
+                <div class="col-12 cooo" style="direction: rtl;">{{instance.description|safe}}</div>
+                <script>
+                  var cont=0;
+          var array= document.getElementsByClassName('cooo')[0].getElementsByTagName("h2");
+          for (let index = 0; index < array.length; index++) {
+            cont++; 
+             document.getElementById('go').innerHTML += '<a class=" nav-link read-more m-2" href="#go'+index+'" ><span class="badge bg-primary">'+cont+'</span>'+ array[index].innerHTML +'</a>';
+             document.getElementsByTagName("h2")[index].id += 'go'+index;
+          }
+          if (document.getElementsByClassName('cooo')[0].getElementsByTagName("h2").length >0 ) {
+            
+          document.getElementById('co').innerText = 'محتويات المقال (اختر للانتقال)'; 
+          document.querySelector(".cooo #h2")
+          }
+                </script>
+              </div> 
+ 
+              <div class="row justify-content-center">
+
+                {% for post in posts %}
+      
+                <div class="card read-more col-md-6 col-lg-4  col-xs-1 col-sm-6  mb-2 " dstyle="width: 260px; margin: 7px;">
+      
+      
+      
+                  <div class="d-flex read-more " style="direction: ltr;">
+      
+                    {% csrf_token %}
+      
+                    {% if request.user.is_authenticated %}
+                    <div class="pr-2">
+                      <span class="" id="like_count{{post.id}}">{{post.like_count}}</span>
+                      <button class="btn btn-link text-dark p-0 border-0 btn-outline-light" id="like-button"
+                        onclick="myid({{post.id}})" value="{{post.id}}">
+                        <svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-heart" fill="currentColor"
+                          xmlns="http://www.w3.org/2000/svg">
+                          <path fill-rule="evenodd"
+                            d="M8 2.748l-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z" />
+                        </svg>
+                      </button>
+                    </div>
+                    {% if request.user in post.favourites.all %}
+                    <div>
+                      <a href="{% url 'accounts:favourite_list' %}" class="text-dark">
+                        <svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-bookmark-check" fill="currentColor"
+                          xmlns="http://www.w3.org/2000/svg">
+                          <path fill-rule="evenodd"
+                            d="M4.5 2a.5.5 0 0 0-.5.5v11.066l4-2.667 4 2.667V8.5a.5.5 0 0 1 1 0v6.934l-5-3.333-5 3.333V2.5A1.5 1.5 0 0 1 4.5 1h4a.5.5 0 0 1 0 1h-4z" />
+                          <path fill-rule="evenodd"
+                            d="M15.854 2.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L12.5 4.793l2.646-2.647a.5.5 0 0 1 .708 0z" />
+                        </svg>
+                      </a>
+                    </div>
+                    {% else %}
+                    <div>
+                      <button href="{% url 'accounts:favourite_add' post.id %}" onclick="fav('{% url 'accounts:favourite_add' post.id %}',this.id )" id="fav{{ post.id }}"  class="text-dark"style="border: none; background: none;">
+                        <svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-bookmark-plus" fill="currentColor"
+                          xmlns="http://www.w3.org/2000/svg">
+                          <path fill-rule="evenodd"
+                            d="M4.5 2a.5.5 0 0 0-.5.5v11.066l4-2.667 4 2.667V8.5a.5.5 0 0 1 1 0v6.934l-5-3.333-5 3.333V2.5A1.5 1.5 0 0 1 4.5 1h4a.5.5 0 0 1 0 1h-4zm9-1a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1H13V1.5a.5.5 0 0 1 .5-.5z" />
+                          <path fill-rule="evenodd" d="M13 3.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0v-2z" />
+                        </svg>
+                      </button>
+                    </div>
+                    {% endif %}
+                    {% else %}
+                    <div class="pr-2">
+                      <span class="" id="like_count">{{post.like_count}}</span>
+                      <a href="{% url 'account_signup' %}" class="btn btn-link text-dark p-0 border-0 btn-outline-light"
+                        value="{{post.id}}">
+                        <svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-heart" fill="currentColor"
+                          xmlns="http://www.w3.org/2000/svg">
+                          <path fill-rule="evenodd"
+                            d="M8 2.748l-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z" />
+                        </svg>
+                      </a>
+                    </div>
+                    <div>
+                      <a href="{% url 'account_signup' %}" class="text-dark"> <svg width="1.5em" height="1.5em"
+                          viewBox="0 0 16 16" class="bi bi-bookmark-plus" fill="currentColor"
+                          xmlns="http://www.w3.org/2000/svg">
+                          <path fill-rule="evenodd"
+                            d="M4.5 2a.5.5 0 0 0-.5.5v11.066l4-2.667 4 2.667V8.5a.5.5 0 0 1 1 0v6.934l-5-3.333-5 3.333V2.5A1.5 1.5 0 0 1 4.5 1h4a.5.5 0 0 1 0 1h-4zm9-1a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1H13V1.5a.5.5 0 0 1 .5-.5z" />
+                          <path fill-rule="evenodd" d="M13 3.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0v-2z" />
+                        </svg></a>
+                    </div>
+                    {% endif %}
+                  </div>
+      
+      
+                  <a href="{{post.get_absolute_url}}">
+      
+                    {% if not 'video' in post.video_or_article %}
+                    <img class="card-img-top w-100 d-block shadow-lg" src="{{post.image.url}}" style="height: 155px;" />
+                     
+                    {% endif %}
+      
+                  {% if 'video' in post.video_or_article %}
+                  <div class="img-wrapper">
+                    <img class="img-responsive " src="{{post.image.url}}" style="height: 155px;" />
+                    <div class="img-overlay">
+                      <i class="fa fa-play" aria-hidden="true" style="font-size: 52px; color: whitesmoke"></i>
+                    </div>
+                  </div>
+                  {% endif %}
+                </a>
+                  <div class="card-body1">
+                    <a href="{{post.get_absolute_url}}"> <span class="read-more">{{post.title|truncatechars:50}}</span></a>
+                  </div>
+      
+                  <div class="d-flex">
+                    <div class="d-flex">
+      
+                      <a class="read-more" href="{{post.category.get_url_categories}}" style="padding: 5px;"><img class="rounded-circle shadow-lg"
+                          src="{{ post.category.image.url }}" width="23px" height="23px" /><span><span
+                            class="badge bg-danger">{{ post.category|title }}</span></span></a>
+      
+                    </div>
+                    <div class="d-flex"></div>
+                  </div>
+                </div>
+      
+      
+                {% endfor %}
+              </div>
+              
+      
+              
+    <!--Pagination-->
+    <nav aria-label="Page navigation example">
+      <ul class="pagination justify-content-center">
+      {% if posts.has_previous %}
+          <li >
+          <a class="read-more" href="?page={{ posts.previous_page_number }}">{% trans "سابق" %}</a>
+        </li>
+      {% else %}
+          <li class=" disabled">
+          <a class="read-more" href="#" tabindex="-1" aria-disabled="true">{% trans "سابق" %}</a>
+        </li>
+      {% endif %} 
+      {% if posts.has_next %}
+          <li >
+          <a class="read-more" href="?page={{ posts.next_page_number }}">{% trans "التالي" %}</a>
+        </li>
+      {% else %}
+          <li class=" disabled">
+          <a class="read-more" href="#" tabindex="-1" aria-disabled="true">{% trans "التالي" %}</a>
+
+        </li>
+      {% endif %}
+    </ul>
+  </nav>
+  <!--end of Pagination-->
+
+            </div>
+            
+          </div>
+          <div class="col-3">
+            
+    
+            {% load post_tag %}
+    
+            {% latest_posts1 %}
+    
+          </div>
+        </div>
+    
+    {% include "base/footer.html" %}
+
+    {% endblock %}
+
+
+
+
+    

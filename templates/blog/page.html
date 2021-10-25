@@ -1,0 +1,18 @@
+{% extends "../base/base.html" %}
+{% block title %}{{catlist.page.title }} - الدكـتور{% endblock %}
+{% block content %}
+{% include "base/nav-main.html" %}
+<div class="container pt-5 mb-15" style="box-shadow: 4px 23px 34px -9px; margin-bottom: 81px;">
+
+{{catlist.page.description|safe }}
+</div>
+<style>
+    p{
+        color: #f4b510;
+    }
+</style>
+
+
+
+{% include "base/footer.html" %}
+{% endblock %}

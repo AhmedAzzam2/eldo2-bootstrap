@@ -1,0 +1,360 @@
+{% load i18n %}
+
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  
+                  <div class="modal-body fontd">
+                    <p>اتصل بنا</p>
+                    <form class="shadow">
+                      <!-- Name input -->
+                      <div class="form-outline mb-4">
+                        <input type="text" id="form4Example1" class="form-control fontd" placeholder="الإ سم" />
+                      </div>
+                    
+                      <!-- Email input -->
+                      <div class="form-outline mb-4  ">
+                        <input type="email" id="form4Example2" class="form-control fontd" placeholder="عنوان بريد الكتروني" />
+                      </div>
+                    
+                      <!-- Message input -->
+                      <div class="form-outline mb-4  ">
+                        <textarea class="form-control fontd" id="form4Example3" placeholder="الرسالة" rows="4"></textarea>
+                      </div>
+                    
+                    
+                      <!-- Submit button -->
+                      <button type="submit" class="btn btn-primary btn-block mb-4  read-more">إرسال</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div> 
+            
+<script type="text/javascript"> 
+
+  var setTheme = localStorage.getItem('theme')
+  console.log('theme:', setTheme)
+
+  if (setTheme == null){
+    swapStyle('/static/css/light.css')
+  }else{
+    swapStyle(setTheme)
+  }
+
+  function swapStyle(sheet){
+    document.getElementById('mystylesheet').href = sheet;
+          localStorage.setItem('theme', sheet);
+
+  }
+
+
+
+</script>
+<style>
+      .nav-link:hover {
+  background: rgb(179 179 179 / 25%);
+}
+footer > .row{
+  
+  overflow: hidden;
+  text-align: center;
+  background: linear-gradient( 130deg , rgba(251,251,254,.6), rgba(251,251,254,.2));
+  box-shadow: inset 2px 2px 1px rgba(251,251,254,.3) inset -2px -2px 1px rgba(251,251,254,.2);
+  border-radius: 1.5rem;
+  backdrop-filter: blur(10px);
+  border: 2px solid #ffffff;   transition: .5s;
+}
+  </style>
+<footer class="container">
+
+                    
+        {% load post_tag %}
+
+
+    <div class="row">
+
+        <div class="col-12 col-md row">
+            <!-- <a class="navbar-brand" ="="" "="">الد<span style="color: #3300ffe6;">كـ</span>تور</a> -->
+            <div class="col-3 mt-2"><img class="bg-light read-more p-0" src="/media/posts/default.jpg" width="100px" height="70px"></div>
+            <p class="col-9 p-4" style="font-size: 9px; line-height: 1.4;">الدكتور موقع طبي وصحة شامل. آخر المعلومات عن التغذية, الريجيم, الحمل والولادة, صحة الاطفال, أمراض السرطان, القلب, السكري,  والزواج وكافة طرق العلاج والادوية.</p>
+        </div>
+        
+        <div class="col-md-6">
+            <!-- <button type="button" class="nav-link read-more" data-toggle="modal" data-target="#exampleModal2">
+              اتصل بنا
+            </button> -->
+            
+            {% pageTag %}
+    
+        </div>
+        <div class="row col-12">
+          <small class="col-4">
+            
+            <a class="fab fa-facebook" href="https://www.youtube.com/channel/UC4of8xqL-SpDvTdOrRzS4sw "  > </a>
+            <a class="fab fa-twitter" href="https://www.facebook.com/Eldoctooor" > </a>
+            <a class="fab fa-youtube" href="https://www.youtube.com/channel/UC4of8xqL-SpDvTdOrRzS4sw" style="color: crimson;" > </a>
+        
+          </small>
+    <small class="col-md-7 mb-5 text-muted text-center ">&copy; حقوق النشر محفوظة لمؤسسة الدكتور التعليمية والإعلامية - لندن - 2019-2021 <br>
+
+      This website is part of Eldoctor Ltd - UK Registered Company - Reg No: 13198911
+      
+      </small>
+    
+        </div>
+<script>
+    function formExit() {
+      document.getElementById("newForm").remove();
+    }
+  
+  
+  
+    function mylike(params) {
+      var postid = params;
+      var button = $(this).attr("value");
+      $.ajax({
+        type: 'POST',
+        url: '{% url "accounts:thumbs" %}',
+        data: {
+          postid: postid,
+          csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+          action: 'thumbs',
+          button: button,
+        },
+        success: function (json) {
+          if (json.length < 1 || json == undefined) {
+            //empty
+          }
+          document.getElementById("up" + params).innerHTML = json['up']
+          document.getElementById("down" + params).innerHTML = json['down']
+          $("svg").removeClass("thumb-active");
+  
+          if (json['remove'] == 'none') {
+            $("#" + button).removeClass("thumb-active");
+          } else {
+            $("#" + button).addClass("thumb-active");
+          }
+  
+        },
+        error: function (xhr, errmsg, err) { }
+      });
+    }
+  
+    $('#myForm').trigger("reset");
+  
+    function myid(params) {
+      $.ajax({
+        type: 'POST',
+        url: '{% url "accounts:like" %}',
+        data: {
+          postid: params,
+          csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+          action: 'post'
+        },
+        success: function (json) {
+          document.getElementById("like_count" + params).innerHTML = json['result']
+        },
+        error: function (xhr, errmsg, err) {
+  
+        }
+      });
+    }
+    
+// fav start
+    function fav(params,classd) { 
+      document.getElementById(classd).innerHTML = '<a href="/account/profile/favourites/"><svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-bookmark-check" fill="currentColor" xmlns="http://www.w3.org/2000/svg"> <path fill-rule="evenodd" d="M4.5 2a.5.5 0 0 0-.5.5v11.066l4-2.667 4 2.667V8.5a.5.5 0 0 1 1 0v6.934l-5-3.333-5 3.333V2.5A1.5 1.5 0 0 1 4.5 1h4a.5.5 0 0 1 0 1h-4z"></path> <path fill-rule="evenodd" d="M15.854 2.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L12.5 4.793l2.646-2.647a.5.5 0 0 1 .708 0z"></path> </svg>';
+      $.ajax({
+        type: 'POST',
+        url: params,
+        data: {
+          postid: params,
+          csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+          action: 'post'
+        },
+        success: function (json) { 
+        },
+        error: function (xhr, errmsg, err) {
+  
+        }
+      });
+    }
+ // Fav end
+ 
+// fav user start
+ {% if user.is_authenticated %}
+function favUser(params,classd) { 
+      document.getElementById(classd).innerHTML = '<a href="/account/profile/follow_list/">following';
+      $.ajax({
+        type: 'POST',
+        url: params,
+        data: {
+          postid: params,
+          csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+          action: 'post'
+        },
+        success: function (json) { 
+        },
+        error: function (xhr, errmsg, err) {
+  
+        }
+      });
+    }
+ 
+ {% else %}
+ 
+function favUser() { 
+      document.location ='/accounts/signup/';
+    }
+ {% endif %}
+ // Fav user end
+
+
+
+ 
+ $(document).ready(function () {
+    $('.thumbaction').ready(function (e) {
+      e.preventDefault();
+      var postid = document.getElementById('thumbs').getAttribute('data-value');
+      var button = $(this).attr("value");
+      $.ajax({
+        type: 'POST',
+        url: '{% url "accounts:thumbs" %}',
+        data: {
+          postid: '31',
+          csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+          action: 'thumbs',
+          button: 'thumbsup',
+        },
+        success: function (json) {
+          if (json.length < 1 || json == undefined) {
+            //empty
+          }
+          document.getElementById("up").innerHTML = json['up']
+          document.getElementById("down").innerHTML = json['down']
+          $("svg").removeClass("thumb-active");
+
+          if (json['remove'] == 'none') {
+            $("#" + button).removeClass("thumb-active");
+          } else {
+            $("#" + button).addClass("thumb-active");
+          }
+
+        },
+        error: function (xhr, errmsg, err) {}
+      });
+    });
+  });
+    
+  </script>
+
+
+
+
+
+<ul class="nav justify-content-center py-1 ">
+  <li class="nav-item">
+    <a class="nav-link fontd" href="{% url 'blog:homepage' %}">الد<span style="color: #3300ffe6;">كـ</span>تور</a>
+  </li>
+  <li class="nav-item">
+    <a href="{% url 'blog:homepage' %}" class="nav-link fontd fa fa-home"> </a>
+  </li>
+  <li class="nav-item">
+    <a href="{% url 'blog:videos' %}" class="nav-link fontd fa fa-desktop"> </a>
+  </li>
+  <li class="nav-item">
+    <a href="{% url 'boards:home' %}" class="nav-link fontd fa fa-comment"> </a>
+  </li>
+  
+  <li class="nav-item">
+    <div type="button" class="nav-link fas fa-layer-group fontd" data-toggle="modal" data-target="#exampleModal"> </div>
+  </li>
+  {% if request.user.is_authenticated %}
+  <li class="nav-item">
+    <a href='{% url "accounts:follow_list" %}' class="nav-link fa fa-heart fontd"></a>
+  </li>
+  <li class="nav-item">
+    <a href='{% url "accounts:favourite_list" %}' class="nav-link fa fa-bookmark fontd"></a>
+  </li>
+  <li class="nav-item"> 
+    <div class="dropdown">
+      <button class="btn fontd dropdown-toggle p-0" type="button" id="dropdownMenuButton11" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <img class="border rounded-circle" src="{% for data in avatar %} {{ data.avatar.url }} {% endfor %}" style="width: 33px;height: 33px;" /><span style="color: #000000;font-size: 20px;">{{ request.user  }}</span></a>
+      </button>
+      <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton11">
+        <li><a class="dropdown-item" href="{% url "accounts:edit" %}">Edit details 
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file" viewBox="0 0 16 16"> <path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/> </svg>
+        </a></li>
+        <li><a class="dropdown-item" href="/accounts/email/">Add or edit your email
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-envelope-fill" viewBox="0 0 16 16"> <path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555zM0 4.697v7.104l5.803-3.558L0 4.697zM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586l-1.239-.757zm3.436-.586L16 11.801V4.697l-5.803 3.546z"/> </svg>
+        </a></li>
+        <li><a class="dropdown-item" href="/accounts/password/change/"><samp>change Password </samp>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen-fill" viewBox="0 0 16 16"> <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001z"/> </svg>
+        </a></li>
+        <li><a class="dropdown-item" href="/accounts/logout/"> <samp>Log out</samp>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-left" viewBox="0 0 16 16"> <path fill-rule="evenodd" d="M10 3.5a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-2a.5.5 0 0 1 1 0v2A1.5 1.5 0 0 1 9.5 14h-8A1.5 1.5 0 0 1 0 12.5v-9A1.5 1.5 0 0 1 1.5 2h8A1.5 1.5 0 0 1 11 3.5v2a.5.5 0 0 1-1 0v-2z"/> <path fill-rule="evenodd" d="M4.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H14.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"/> </svg>
+         </a></li> 
+      </ul>
+    </div> 
+  </li>
+  
+  
+    {% for data in avatar %}  
+        {% if data.dr %}
+    <li class="nav-item">
+      <a href='{% url "crud:all" %}' class="fas fa-plus rounded-circle p-3 fontd"></a>
+    </li>
+        {% endif %}
+    
+    {% endfor %}
+    
+
+    
+{% else %}
+<li class="nav-item">
+  <a href='{% url "account_signup" %}' class="nav-link fontd">{% trans "Sign Up" %}</a>
+</li>
+<li class="nav-item">
+  <a href='{% url "account_login" %}' class="nav-link fontd text-light bg-dark">{% trans "Sign In" %}</a>
+</li>
+{% endif %}
+<li class="nav-item">
+  <div onclick="swapStyle('/static/css/light.css')"  class="nav-link fas fa-sun fontd" ></div>| 
+  <div onclick="swapStyle('/static/css/dark.css')"  class="nav-link fas fa-moon fontd" ></div>
+</li>
+
+{% load Topic_tag %}
+
+{% if request.user.is_authenticated %}
+ {% Notification %} 
+{% endif %}
+
+<li class="nav-item">
+
+{% load i18n %}
+<form action="{% url 'set_language' %}" method="post" >
+  {% csrf_token %}
+    <input name="next" type="hidden" value="{{ redirect_to }}">
+    <select name="language" class="fontd read-more" onchange="this.form.submit()">
+        {% get_current_language as LANGUAGE_CODE %}
+        {% get_available_languages as LANGUAGES %}
+        {% get_language_info_list for LANGUAGES as languages %}
+        {% for language in languages %}
+            <option class="fontd read-more" value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected{% endif %}>
+                {{ language.name_local }} ({{ language.code }})
+            </option>
+        {% endfor %}
+    </select>
+</form> 
+</li>
+
+</ul>
+
+
+ 
+</footer>
+ 
+  
+</body>
+</html>

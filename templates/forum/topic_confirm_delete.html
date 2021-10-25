@@ -1,0 +1,13 @@
+{% extends 'base/base.html' %}
+{% block content %}
+{% include "base/nav-main.html" %}
+{{% load bootstrap4 %}
+
+<div class="row justify-content-center mb-4 fontd">
+<form method="post">{% csrf_token %} 
+    <p>هل أنت متأكد أنك تريد حذف <p class="text-danger"> {{ object }} </p> ?</p> 
+    <input type="submit" class="btn btn-danger" value="حذف"> 
+</form> 
+</div>
+{% include "base/footer.html" %}
+{% endblock content %}

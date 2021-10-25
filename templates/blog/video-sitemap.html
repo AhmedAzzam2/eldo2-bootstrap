@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+        {% spaceless %}
+        {% for url in urlset %}
+   <url>
+    <loc>{{ url.location }}</loc>
+     <video:video>
+       <video:thumbnail_loc>{{ request.get_host}}{{url.item.image.url }}</video:thumbnail_loc>
+       <video:title>{{ url.item.title }}</video:title>
+       <video:description>{{url.item.excerpt}}</video:description> 
+       <video:publication_date>{{ url.item.publish|date:"c"}}</video:publication_date>
+       <video:family_friendly>yes</video:family_friendly>
+       <video:uploader
+         info="https://www.{{ request.get_host }}/{{ url.item.author.username }}">{{ url.item.author.profile.fullName }}
+       </video:uploader> 
+     </video:video>
+   </url>
+   {% endfor %}
+   {% endspaceless %}
+</urlset>

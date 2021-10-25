@@ -1,0 +1,9 @@
+<ul class="nav nav-tabs shadow-lg">
+   {% for node in page %}
+   <a class="nav-link read-more" href="/page/{{node.slug}}" style="padding: 5px;"> 
+         <span>{{ node.title }}</span></a>
+
+   {% endfor %}
+
+
+</ul>

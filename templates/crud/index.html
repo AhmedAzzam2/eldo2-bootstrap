@@ -1,0 +1,139 @@
+ 
+    {% extends "../base/base.html" %}
+    {% block title %}
+    all post {{ user.username }}
+    {% endblock %}
+    {% block content %}
+    {% include "base/nav-main.html" %}
+    {% load i18n %}
+
+    <div class="container" >
+      <p  style="margin-top: 20px;"> جمع المقلات , الفيديوهات</p>
+      <div class="row">
+        
+        
+         <div> 
+          <a href="{% url 'crud:all' %}" class="btn shadow bg-white" style="border-radius:44px 0 0 0;"> <i class="fas fa-tachometer-alt"></i> جمع المقلات</a> 
+          <a href="{% url 'crud:new_post' %}" class="btn shadow" style="border-radius:44px 0 0 0;"> <i class="fas fa-plus-square"></i>   post/video</a> 
+          <a href="{% url 'crud:all-cat' %}" class="btn shadow" style="border-radius:44px 0 0 0;"> <i class="fas fa-hotel"></i> جمع الاقسام</a> 
+          <a href="{% url 'crud:new-cat' %}" class="btn shadow" style="border-radius:44px 0 0 0;"> <i class="fas fa-plus-square"></i> اضاف قسم</a>
+
+         </div>
+   
+
+    <table class="table fontd" >
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">img</th>
+          <th scope="col">titile</th>
+          <th scope="col">status</th>
+          <th scope="col">category</th>
+          <th scope="col">view</th>
+          <th scope="col">like</th>
+          <th scope="col">action</th>
+        </tr>
+      </thead>
+      <tbody>
+          {% for post in user_posts %}
+          <tr>
+            <th scope="row">1</th> 
+          <td> <img src="{{post.image.url}}" style="height: 22px; width: 71px;" class="shadowX"> </td>
+          <td> <a href="{{post.get_absolute_url}}"> <span class="shadow">{{post.title|truncatechars:50}}</span></a> </td>
+          <td>{{ post.status }}</td>
+          <td> {{ post.category|title }}</td>
+          <td><i class="fa fa-like"></i> {{post.views}}  </td>
+          <td><i class="fa fa-heart"></i> {{post.like_count}}  </td>
+<td>
+          <a href="/crud/{{post.id}}/update" class="shadowX btn btn-info" >تحدث</a>
+          <a href="/crud/{{post.id}}/delete" class="shadowX btn bg-danger">حذف</a>
+</td>
+</tr>
+          
+    {% endfor %}
+
+        </tr>
+      </tbody>
+    </table>
+    
+      </div>
+    </div>
+    
+    
+<style>
+  table {
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  table td, table th {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+ tr:nth-child(even){background-color: #ffffff;}
+  
+  table tr:hover {background-color: #ddd;}
+  
+  table th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #ffffff;
+    color: rgb(0, 0, 0);
+  }
+  </style>
+    
+    
+
+    <!--Pagination-->
+    <nav aria-label="Page navigation example">
+      <ul class="pagination justify-content-center">
+      {% if user_posts.has_previous %}
+          <li >
+          <a class="read-more" href="?page={{ user_posts.previous_page_number }}"> </a>
+        </li>
+      {% else %}
+          <li class=" disabled">
+          <a class="read-more" href="#" tabindex="-1" aria-disabled="true">{% trans "سابق" %}</a>
+        </li>
+      {% endif %}
+
+      {% if user_posts.number|add:'-4' > 1 %}
+          <li ><a class="read-more" href="?page={{ user_posts.number|add:'-5' }}">&hellip;</a></li>
+      {% endif %}
+
+      {% for i in user_posts.paginator.page_range %}
+          {% if user_posts.number == i %}
+              <li class="  active read-more" aria-current="page">
+            <span class="read-more">
+              {{ i }}
+              <span class="sr-only">(current)</span>
+            </span>
+          </li>
+          {% elif i > user_posts.number|add:'-5' and i < user_posts.number|add:'5' %}
+               <li ><a class="read-more" href="?page={{ i }}">{{ i }}</a></li>
+          {% endif %}
+      {% endfor %}
+
+      {% if user_posts.paginator.num_pages > user_posts.number|add:'4' %}
+         <li ><a class="read-more" href="?page={{ user_posts.number|add:'5' }}">&hellip;</a></li>
+      {% endif %}
+
+      {% if user_posts.has_next %}
+          <li >
+          <a class="read-more" href="?page={{ user_posts.next_page_number }}">{% trans "التالي" %}</a>
+        </li>
+      {% else %}
+          <li class=" disabled">
+          <a class="read-more" href="#" tabindex="-1" aria-disabled="true">{% trans "التالي" %}</a>
+
+        </li>
+      {% endif %}
+    </ul>
+  </nav>
+  <!--end of Pagination-->
+ 
+{% include "base/footer.html" %}
+{% endblock %}

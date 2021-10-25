@@ -1,0 +1,289 @@
+ 
+    {% extends "../base/base.html" %}
+    {% block title %}
+    all post {{ user.username }}
+    {% endblock %}
+    {% block metaHead %}
+    {{form.media}}
+      
+    {% endblock metaHead %}
+    {% block content %}
+    {% include "base/nav-main.html" %}
+
+
+    <div class="row">
+      
+<div class="col-md-2">
+  
+    <div class="card card-personal shadow-lg">
+  
+        <img class="read-more rounded-circle card-img-top" src="{% for data in avatar %}{{ data.avatar.url }} {% endfor %}" /> 
+    
+        <div class="card-body">
+          <a>
+            <h4 class="card-title title-one">{{ user.first_name }} </h4>
+          </a> 
+          <a href="/crud/all" class="btn btn-outline-primary mb-2 shadow"> <i class="fas fa-tachometer-alt"></i> جمع المقلات</a> 
+          <a href="/crud/new" class="btn btn-outline-primary mb-2 shadow"> <i class="fas fa-plus-square"></i>   post/video</a><br>
+          <a href="/crud/cat/all" class="btn btn-outline-danger mb-2 shadow"> <i class="fas fa-hotel"></i> جمع الاقسام</a><br>
+          <a href="/crud/cat/new" class="btn btn-outline-danger mb-2 shadow"> <i class="fas fa-plus-square"></i> اضاف قسم</a>
+        </div>
+
+
+      </div>
+</div>  
+
+{% load bootstrap4 %}
+<div class="form-container col-md-9">
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="form__section-title">{{ title }}</h1>
+    </div>
+    <div class="col-md-12">
+        {% bootstrap_messages %}
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}  
+
+<!-- fields = ['category','video_or_article','title', 'content','image','status','excerpt','tags','slug'] -->
+
+    
+  {{ form.non_field_errors }}
+
+  {{ form.source.errors }}
+  {{ form.source }}
+<div class="row">
+  <div class="col-md-8">
+    
+      {{ form.title.label_tag }} 
+        {{ form.title.errors }}
+        {{ form.title }}
+        <br>
+      {{ form.content.label_tag }} 
+        {{ form.content.errors }}
+        {{ form.content }} <br>
+ <div id="video_url">
+  {{ form.video_url.label_tag }} 
+  {{ form.video_url.errors  }}
+  {{ form.video_url }} 
+  <script>
+   let v = document.getElementById('id_video_url').value ;
+    if (v.length  < 5 ) {
+      document.getElementById('video_url').style.display = 'none';
+    }
+  </script>
+
+ </div>
+
+  </div>
+  <div class="col-md-4">
+
+    <button type="submit" class="read-more">Submit</button>
+  <table border="0">
+ 
+    <tr>
+      <th>{{ form.category.label_tag }}</th>
+      <td>
+        {{ form.category.errors }}
+        {{ form.category }}
+      </td>
+    </tr>
+    <tr>
+      <th>{{ form.video_or_article.label_tag }}</th>
+      <td>
+        {{ form.video_or_article.errors }}
+        {{ form.video_or_article }}
+      </td>
+    </tr>
+    <tr>
+      <th>{{ form.status.label_tag }}</th>
+      <td>
+        {{ form.status.errors }}
+        {{ form.status }}
+      </td>
+    </tr>
+
+    <tr>
+      <th>{{ form.excerpt.label_tag }}</th>
+      <td>
+        {{ form.excerpt.errors }}
+        {{ form.excerpt }}
+      </td>
+    </tr>
+    <tr>
+      <th>{{ form.slug.label_tag }}</th>
+      <td>
+        {{ form.slug.errors }}
+        {{ form.slug }}
+      </td>
+      <tr class="d-none">
+        <th>{{ form.video_duration.label_tag }}</th>
+        <td>
+          {{ form.video_duration.errors }}
+          {{ form.video_duration }}
+        </td>
+      </tr>
+    </tr>
+    <tr>
+      <th>{{ form.tags.label_tag }}</th>
+      <td>
+        {{ form.tags.errors }}
+         
+<input type="text" name="tags" value=" {% for i in form.tags.value %} {{ i }}, {% endfor %}" class="read-more" required="" id="id_tags" data-role="tagsinput" />
+      </td>
+    </tr>
+    <tr>
+      <th>{{ form.image.label_tag }}</th>
+      <td>
+        <!--  check for input type -->
+        {% if form.image.field.widget.input_type == 'file'%}
+        <!-- <a href="{{ MEDIA_URL }}{{ form.image.value }}">{{ form.image.value }}</a><br/> -->
+        <input type="file" name="{{ form.image.name }}" onchange="upload_img(this);" id="id_image" class="d-none"/>
+    {% endif %} 
+            <img id="img_id" src="/media/{{ form.image.value }}" width="222px" class="read-more" />
+        <div style="position: relative; z-index: 16; width: 21rem; height: 4rem; margin: 1rem auto; padding: 0 0 1.6rem; color: #40444f; border: .2rem dashed #616778; border-radius: 1.5rem; cursor: pointer;text-align: center;" onclick='document.querySelector("#id_image").click();document.querySelector(" img_id" ).style.display= "block" '>upload image</div>
+
+            <script type="text/javascript">
+        
+        
+              function upload_img(input) {
+                  if (input.files && input.files[0]) {
+                      var reader = new FileReader();
+        
+                      reader.onload = function (e) {
+                          $('#img_id').attr('src', e.target.result);
+                      }
+        
+                      reader.readAsDataURL(input.files[0]);
+                  }
+              }
+        
+          </script>
+      </td>
+    </tr>
+
+
+    <tr>
+      <th>{{ form.message.label_tag }}</th>
+      <td>
+        {{ form.message.errors }}
+        {{ form.message }}
+        <br />
+        {{ form.message.help_text }}
+      </td>
+    </tr>
+
+</table>
+
+  </div>
+</div>
+
+        </form>
+    </div>
+</div> 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js" integrity="sha512-9UR1ynHntZdqHnwXKTaOm1s6V9fExqejKvg5XMawEMToW4sSw+3jtLrYfZPijvnwnnE8Uol1O9BcAskoxgec+g==" crossorigin="anonymous"></script>
+</div><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css" integrity="sha512-xmGTNt20S0t62wHLmQec2DauG9T+owP9e6VU8GigI0anN7OXLip9i7IwEhelasml2osdxX71XcYm6BQunTQeQg==" crossorigin="anonymous" />
+<style>
+  span.tag.label.label-info {
+    display: inline;
+    padding: .2em .6em .3em;
+    font-size: 75%;
+    font-weight: 700;
+    line-height: 1;
+    color: rgb(235 255 245);
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: .25em;
+    background: indianred;
+    box-shadow: 1px 1px 7px 1px;
+}
+</style>
+
+<script>
+  var changeDirection = function (dir, align) {
+    // Wrap block tags.
+    this.selection.save();
+    this.html.wrap(true, true, true, true);
+    this.selection.restore();
+
+    // Get blocks.
+    var elements = this.selection.blocks();
+
+    // Save selection to restore it later.
+    this.selection.save();
+
+    for (var i = 0; i < elements.length; i++) {
+      var element = elements[i];
+      if (element != this.el) {
+        this.$(element)
+          .css('direction', dir)
+          .css('text-align', align)
+          .removeClass('fr-temp-div');
+      }
+    }
+
+    // Unwrap temp divs.
+    this.html.unwrap();
+
+    // Restore selection.
+    this.selection.restore();
+  }
+
+  FroalaEditor.DefineIcon('rightToLeft', {NAME: 'long-arrow-left'});
+  FroalaEditor.RegisterCommand('rightToLeft', {
+    title: 'RTL',
+    focus: true,
+    undo: true,
+    refreshAfterCallback: true,
+    callback: function () {
+      changeDirection.apply(this, ['rtl', 'right']);
+    }
+  })
+
+  FroalaEditor.DefineIcon('leftToRight', {NAME: 'long-arrow-right'});
+  FroalaEditor.RegisterCommand('leftToRight', {
+    title: 'LTR',
+    focus: true,
+    undo: true,
+    refreshAfterCallback: true,
+    callback: function () {
+      changeDirection.apply(this, ['ltr', 'left']);
+    }
+  })
+
+  new FroalaEditor('dtd#froala-editor', {
+    // Set custom buttons with separator between them. Also include the name
+    // of the buttons  defined in customButtons.
+    toolbarButtons: ['undo', 'redo' , 'bold', 'formatOL', 'formatUL', '|', 'rightToLeft', 'leftToRight'],
+  })
+</script>
+
+
+</div>
+<script>
+    document.querySelector("#id_category").required = true 
+    document.querySelector("#id_category").classList.remove("is-valid") ;
+
+</script>
+<style>
+    .note-editing-area {
+    text-align: right;
+}
+  .read-more{
+      padding: 7px 20px;
+      float: right;
+      font-size: 12px;
+      background: #ffffff;
+      color: #000000;
+      box-shadow: 0px 10px 20px -10px #1376c5;
+      border-radius: 25px;
+      text-transform: uppercase;
+  }
+  .post-slide .read-more:hover{
+      background: #3498db;
+      text-decoration:none;
+      color:#fff;
+  }
+</style>
+{% include "base/footer.html" %}
+{% endblock content %}

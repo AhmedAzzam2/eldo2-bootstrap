@@ -1,0 +1,110 @@
+
+
+  <li class="nav-item">
+    <div type="button" class="btn btn-primary" data-toggle="modal" data-target="#bells">
+      <i class="fas fa-bell position-relative"> <span style="
+        position: absolute;
+        left: -2px;
+        border-radius: 50%;
+        background: red;
+        bottom: 9px;
+        font-size: 14px;">{{Notification.all.count}}</span></i>
+    </div> 
+  </li>
+  
+<!-- Modal -->
+<div class="modal fade" id="bells" tabindex="-1" aria-labelledby="bellsLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content"> 
+      <div class="modal-body fontd">
+        
+        
+<div class="boxes fontd">
+  <div class="nof row fontd">
+    <div class="txt col-6">الإشعارات</div>
+    <div class="bt col-6 text-left">
+      <button type="button col-6 text-left" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  </div>
+  <div class="news row ">
+    <div class=" txt col-6 fontd">جديدة</div>
+    <div class="bt col-6 text-left fontd">كل الإشعارات</div>
+  </div>
+    {% for e in Notification %}
+    {% if not user in e.NotfFaId.all  %}
+
+    <a class="box row" style="position: relative;background: #d4d4d47a;" href="{{e.Topic.get_absolute_url}}#{{e.id}}}">
+      <div class="img col-2 fontd" style="position: relative; ">
+        <img src="{{e.author.profile.avatar.url}}" class="im"   style="border-radius: 50%;position: absolute;">
+        <img src="{{e.author.profile.avatar.url}}" class="im2"  style="border-radius: 50%; position: absolute;">
+      </div>
+      <div class="txt2 row col-10" >
+        <div class="tx col-10"style="font-size: 14px;">
+          <div class=" fontd d-block " >{{e.content }}</div>
+          <div class=" fontd " href="{{e.Topic.get_absolute_url}}#{{e.id}}">{{e.publish }}</div>
+        </div>
+        <div class="tx col-2">...</div>
+      </div>
+    </a>
+  
+    {% else %}
+    <a class="box row" style="position: relative;background: #fffffff8;" href="{{e.Topic.get_absolute_url}}#{{e.id}}}">
+      <div class="img col-2" style="position: relative; ">
+        <img src="{{e.author.profile.avatar.url}}" class="im"   style="border-radius: 50%;position: absolute;">
+        <img src="{{e.author.profile.avatar.url}}" class="im2"  style="border-radius: 50%; position: absolute;">
+      </div>
+      <div class="txt2 row col-10" >
+        <div class="tx col-10"style="font-size: 14px;">
+          <div class=" fontd d-block " >{{e.content }}</div>
+          <div class=" fontd " href="{{e.Topic.get_absolute_url}}#{{e.id}}">{{e.publish }}</div>
+        </div>
+        <div class="tx col-2">...</div>
+      </div>
+    </a>
+    {% endif %}
+    
+
+      <!-- {% for a in e.comments.all %}
+      <div class="row read-more">
+        <div><img class="avatar_single" src="{{e.author.profile.avatar.url}}"></div>
+        <div class="pl-3 no-gutters">
+          <a class=" fontd d-block " href="{{e.get_absolute_url}}">{{a.content }}</a>
+          <a class=" fontd " href="{{e.Topic.get_absolute_url}}">{{a.publish }}</a>
+        </div>
+      </div>
+      {% endfor %} -->
+
+    {% endfor %}
+
+  </div>
+      </div> 
+    </div>
+  </div>
+</div>
+
+
+
+
+<style>
+  .boxes{
+    position: relative;
+    margin: 11px;
+    width: 455px;
+    background: rgb(255, 255, 255);
+  }
+  .img .im{ 
+height: 56px;
+width: 56px;
+background: rgb(0, 0, 0);
+  }
+  .img .im2{
+    bottom: 8px;
+    transform: translate(-50%, 50%); 
+    left:  8px; 
+    height: 24px;
+    width: 24px;
+    background: rgb(70, 66, 61);
+  }
+</style>

@@ -1,0 +1,432 @@
+{% extends "../base/base.html" %}
+
+{% load i18n %}
+
+{% block title %}
+{{ProfileN.fullName}}
+{% endblock %}
+
+{% block metaHead %} 
+
+<meta property="og:url" content="{{request.build_absolute_uri}}">
+<meta property="og:image" content="{{ProfileN.avatar.url}}" id="im">
+<meta property="og:title" content="{{ProfileN.fullName}}">
+<meta property="og:description" content="{{ProfileN.bio}}">
+
+
+{% endblock metaHead %}
+
+{% block content %}
+{% include "base/nav-main.html" %}
+<div class="container-fluid text-center"> 
+
+<style>
+  .card2{ position: relative; overflow: hidden; padding: 3rem 0; background-color: var(--body-color); } .card2__container{ display: grid; gap: 1.5rem; } .card2__glass{ position: relative; overflow: hidden; text-align: center; padding: 2.5rem; background: linear-gradient(130deg, rgba(251,251,254,.6), rgba(251,251,254,.2)); box-shadow: inset 2px 2px 1px rgba(251,251,254,.3) inset -2px -2px 1px rgba(251,251,254,.2); border-radius: 1.5rem; backdrop-filter: blur(10px); } .card2__img{ width: 180px; height: 180px; border-radius: 30% 70% 70% 30% / 30% 36% 64% 70% ; border: 2px solid #F4F4FB; margin-bottom: 1rem; } .card2__data{ margin-bottom: 1.5rem; } .card2__title{ font-size: var(--h3-font-size); color: var(--title-color); font-weight: 600; margin-bottom: .25rem; } .card2__profession{ font-size: var(--small-font-size); color: var(--text-color); font-weight: 500; } .card2__button{ display: inline-block; background: linear-gradient(130deg, rgba(251,251,254,.9), rgba(251,251,254,.2)); padding: .75rem 1.5rem; border-radius: .5rem; color: var(--title-color); font-weight: 500; transition: .4s; } .card2__button:hover{ background: linear-gradient(130deg, rgba(251,251,254,1), rgba(251,251,254,.4)); } .card2__social{ position: absolute; top: 50%; transform: translateY(-50%); } .card2__link{ display: block; font-size: 1.35rem; color: var(--title-color); margin: 1rem 0; transform: translateX(-5rem); } .card2__link:nth-child(1){ transition: .2s; } .card2__link:nth-child(2){ transition: .5s; } .card2__link:nth-child(3){ transition: .7s; } .card2__glass:hover .card2__link{ transform: translateX(-1.5rem); } .card2__circle{ position: absolute; width: 250px; height: 250px; background: linear-gradient(130deg, rgba(77,73,191,.8), rgba(255,255,255,.2)); border-radius: 50%; } .card2__circle1{ top: 20%; left: -20%; } .card2__circle2{ bottom: -5%; right: -25%; background: linear-gradient(130deg, rgba(5,219,242,.8), rgba(255,255,255,.2)); } /*========== MEDIA QUERIES ==========*/ @media screen and (min-width: 568px){ .card2__container{ grid-template-columns: repeat(2, 1fr); } } @media screen and (min-width: 768px){ .bd-container{ margin-left: auto; margin-right: auto; } .card2{ padding: 0; } .card2__container{ height: 100vh; grid-template-columns: repeat(3, 1fr); align-content: center; } .card2__circle1{ left: 5%; top: 12%; } .card2__circle2{ right: 8%; bottom: 15%; } }
+</style>
+  <section class="card2">
+    <div class="card2__circle card2__circle1"></div>
+    <div class="card2__circle card2__circle2"></div>
+
+    <div class="card2__container2 bd-container2">
+        <div class="card2__glass">
+            <img src="{{ ProfileN.avatar.url }}" alt="" class="card2__img">
+
+            <div class="card2__data">
+                <h3 class="card2__title">{{ ProfileN.fullName }}</h3>
+                <span class="card2__profession">{{ ProfileN.bio }}</span>
+            </div>
+            
+            <div class="card2__social2">
+              {% if ProfileN.twitter %}
+                <a href="{{ ProfileN.facebook }}" class="card2__button"><i class='fab fa-twitter'></i></a>
+                {% endif %}
+                {% if ProfileN.facebook %}
+                <a href="{{ ProfileN.twitter }}" class="card2__button"><i class='fab fa-facebook' ></i></a>
+                {% endif %}
+                
+        
+                  
+                  
+        {% if request.user in ProfileN.follow.all %}
+          <a href="{% url 'accounts:follow_list' %}" class="card2__button">
+            following
+          </a>
+        {% else %}
+        
+          <button onclick="favUser('{% url 'accounts:follow_add_user' ProfileN.id %}',this.id )" id="{{ ProfileN.id }}" class="card2__button" > follow </button> 
+        {% endif %}
+        <br>  
+        <div class="fontd">
+          {{ ProfileN.follow.all.count }} followers
+
+        </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+      <div class="py-5">
+        <div class="row justify-content-center">  
+          <div class="col-md-2">
+            
+
+<ul class="nav justify-content-center py-1 ">
+    {% for pro in profile %}
+     
+  <li class="nav-item fontd">
+    <a class="nav-link fontd" href="{% url 'blog:post_user' pro.slug %}" >
+      <div class="image_inner_container"> <img src="{{ pro.avatar.url }}"> </div>
+      <div href="{% url 'blog:post_user' pro.slug %}" class=" "> @{{ pro.slug }}  </div>
+    </a>
+    
+                  
+                  
+    {% if request.user in pro.follow.all %}
+      <a href="{% url 'accounts:follow_list' %}" class="card2__button">
+        following
+      </a>
+    {% else %}
+    
+      <button onclick="favUser('{% url 'accounts:follow_add_user' pro.id %}',this.id )" id="{{ pro.id }}" class="btn fontd" > follow </button> 
+    {% endif %}
+      
+
+  </li> 
+    {% endfor %}
+    
+     
+    <style>
+    .image_inner_container{
+      border-radius: 50%;
+      padding: 5px;
+     background: #833ab4; 
+     background: -webkit-linear-gradient(to bottom, #fcb045, #fd1d1d, #833ab4); 
+     background: linear-gradient(to bottom, #fcb045, #fd1d1d, #833ab4);
+    }
+    .image_inner_container img{
+      height: 70px;
+      width: 70px;
+      border-radius: 50%;
+      border: 5px solid white;
+    } 
+    </style>
+    
+</ul>
+    
+          </div>
+          <div class="col-md-6"> 
+            <div class="row justify-content-center">
+    
+
+
+              
+              <div class="row infinite-container">
+                {% for e in posts %}
+  
+                <div class="feed-post infinite-item my-1 col-12 ">
+                  <div class="p-2  read-more2">
+                    <div class="d-flex flex-row justify-content-between align-items-start profile">
+                      <div class="d-flex align-items-center">
+                        <img class="rounded-circle  " src="{{ e.author.profile.avatar.url }}" width="50" height="50">
+                        <div class="d-flex flex-column ml-2">
+                          <a href="{% url 'blog:post_user' e.author.profile.slug %}">{{ e.author.profile.fullName }}</a><span class="time">{{ e.publish }}</span>
+                          
+                        </div>
+                      </div>
+  
+                      {% if e.author.profile.slug == request.user.profile.slug %}
+                      <div class="dropdown">
+                        <button class="btn " type="button" id="dropdownMenuButton" data-toggle="dropdown"
+                          aria-haspopup="true" aria-expanded="false">
+                          <i class="fa fa-ellipsis-h text-black-50 mt-2"></i>
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                          {% if e.nm == '2' %}
+                            
+                          <a href="{% url  'boards:post-update' e.id %}" class="dropdown-item">تحدث</a>
+                          <a href="{% url  'boards:post-delete' e.id %}" class="dropdown-item">حذف</a>
+                          {% else %}
+                          <a href="{% url  'crud:post-update' e.id %}" class="dropdown-item">تحدث</a>
+                          <a href="{% url  'crud:post-delete' e.id %}" class="dropdown-item">حذف</a>
+                          {% endif %}
+                          
+                            
+                        </div>
+                      </div>
+                      {% endif %}
+  
+                    </div>
+  
+                    <div class="feed-image">
+  
+                      <a class="content text-center fontd" href="{{e.get_absolute_url}}">
+                        <p class="p-0 m-0 ">{{ e.title }} ...</p>
+                      </a>
+                      
+
+                        {% if not '/media/Topics/default.jpg' in e.image.url %}
+                      <a href="{{e.get_absolute_url}}">
+                        {% if not '/media/Topics/default.jpg' in e.image.url %}
+                            {% if not 'video' in e.video_or_article %}
+                            <img style="width: 100%;height: 272px;" src="{{ e.image.url }}" />
+                            
+                            {% endif %}
+              
+                          {% if 'video' in e.video_or_article %}
+                          <div class="img-wrapper">
+                            <img style="width: 100%;height: 272px;" src="{{ e.image.url }}" />
+                            <div class="img-overlay">
+                              <i class="fa fa-play" aria-hidden="true" style="font-size: 52px; color: whitesmoke"></i>
+                            </div>
+                          </div>
+                          {% endif %}
+                        {% endif %}
+                        
+                      </a>
+                        {% endif %}
+  
+                    </div>
+                    <div class="row justify-content ">
+                      
+  
+                  <div class="col" style="color: cornflowerblue;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
+                      <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
+                      <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
+                    </svg>
+                    <samp>{{e.views }}</samp>
+                  </div>
+                  {% if user.is_authenticated %}
+                  
+                  
+                {% if request.user in e.favourites.all %}
+                <div class="col">
+                  <a href="{% url 'accounts:favourite_list' %}" class="text-dark">
+                    <svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-bookmark-check" fill="currentColor"
+                      xmlns="http://www.w3.org/2000/svg">
+                      <path fill-rule="evenodd"
+                        d="M4.5 2a.5.5 0 0 0-.5.5v11.066l4-2.667 4 2.667V8.5a.5.5 0 0 1 1 0v6.934l-5-3.333-5 3.333V2.5A1.5 1.5 0 0 1 4.5 1h4a.5.5 0 0 1 0 1h-4z" />
+                      <path fill-rule="evenodd"
+                        d="M15.854 2.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L12.5 4.793l2.646-2.647a.5.5 0 0 1 .708 0z" />
+                    </svg>
+                  </a>
+                </div>
+                {% else %}
+                
+                <div class="col">
+                  <button    onclick="{% if e.nm in '1' %} fav('{% url 'accounts:favourite_add' e.id %}',this.id )  {% else %} fav('{% url 'Boards:favourite_add' e.id %}',this.id ) {% endif %}" id="fav{{ e.id }}"  class="text-dark"style="border: none; background: none;">
+                    <svg style="color: deepskyblue;" width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-bookmark-plus" fill="currentColor"
+                      xmlns="http://www.w3.org/2000/svg">
+                      <path fill-rule="evenodd"
+                        d="M4.5 2a.5.5 0 0 0-.5.5v11.066l4-2.667 4 2.667V8.5a.5.5 0 0 1 1 0v6.934l-5-3.333-5 3.333V2.5A1.5 1.5 0 0 1 4.5 1h4a.5.5 0 0 1 0 1h-4zm9-1a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1H13V1.5a.5.5 0 0 1 .5-.5z" />
+                      <path fill-rule="evenodd" d="M13 3.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0v-2z" />
+                    </svg>
+                  </button>
+                </div>
+                {% endif %}
+  
+                
+                  <div class="col" >
+                    
+
+                    
+
+                    <span onclick="{% if e.nm in '1' %} myidL( {{e.id}} ) {% else %} myidL2( {{e.id}} ) {% endif %}" class="btn p-0" style="color: #FF5700; background-color: #fdd9ce; border-radius: 13px;"><i class="fa fa-heart " id="like{{e.id}}">
+                        {{e.like_count}}</i> </span>
+                  </div>
+                  {% else %}
+                  <a href="{% url 'account_signup' %}" class="col read-more2">
+                    <span class=" col-4"><i class="fa fa-heart"> </i> <span> {{e.like_count}} </span> </span>
+  
+                  </a>
+                  {% endif %}
+  
+                      <div class=" read-more2 col" ><i class="fa fa-comments"  style=" background-color: #daf1bc;"></i>
+                         <span style="color: #7bb32e;" > {{e.comments.all.count }}  </span> </div>
+  
+                      <!-- Button trigger modal -->
+                      <button type="button" class="btn p-0 read-more2 col"  style="color:#4c6ef5;background-color: aliceblue" data-toggle="modal" data-target="#exampleModal2">
+                        <i class="fa fa-share fa-lg ">  </i><span> Share </span>
+                      </button>
+  
+                      <!-- Modal -->
+                      <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="myModelLabel">Share Modal</h5> <button type="button"
+                                class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                              <p>Share this link via</p>
+                              
+                              <div class="d-flex align-items-center icons"> 
+                                <a href="http://www.facebook.com/sharer.php?u=https://{{request.get_host }}{% url 'boards:topic_single' e.slug %}"
+                                onclick="window.open(this.href, 'facebookwindow','left=20,top=20,width=600,height=700,toolbar=0,resizable=1'); return false;" class="fs-5 d-flex align-items-center justify-content-center"> <span class="fab fa-facebook-f"></span> </a> 
+                                <a href="http://twitter.com/intent/tweet?text={{ e.title }} https://{{request.get_host }}{% url 'boards:topic_single' e.slug %}"
+                                onclick="window.open(this.href, 'twitterwindow','left=20,top=20,width=600,height=300,toolbar=0,resizable=1'); return false;" class="fs-5 d-flex align-items-center justify-content-center"> <span class="fab fa-twitter"></span> </a> 
+                                 
+                                <a href="whatsapp://send?text={{ e.title }} https://{{request.get_host }}{% url 'boards:topic_single' e.slug %}" class="fs-5 d-flex align-items-center justify-content-center"> <span class="fab fa-whatsapp"></span> </a> 
+                                      </div>
+                              <p>Or copy link</p>
+                              <div class="field d-flex align-items-center justify-content-between"> <span
+                                  class="fas fa-link text-center"></span> <input type="text" value="https://{{request.get_host }}{% url 'boards:topic_single' e.slug %}">
+                                <button>Copy</button> </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <style>
+                        #shareBtn { letter-spacing: 2px; font-weight: 600; box-shadow: none; background-color: #eee; color: #7d2ae8; border: none } .modal { top: 20% } .btn-close { box-shadow: none; border: none; outline: none } .modal-body .icons { margin: 15px 0px 20px 0px } .modal-body .icons a { text-decoration: none; border: 1px solid transparent; width: 40px; height: 40px; border-radius: 50%; margin-right: 20px; transition: all 0.3s ease-in-out } .modal-body .icons a:nth-child(1) { color: #1877F2; border-color: #B7D4FB } .modal-body .icons a:nth-child(1):hover { background-color: #1877F2; color: #fff } .modal-body .icons a:nth-child(2) { color: #46C1F6; border-color: #b6e7fc } .modal-body .icons a:nth-child(2):hover { background-color: #46C1F6; color: #fff } .modal-body .icons a:nth-child(3) { color: #e1306c; border-color: #f5bccf } .modal-body .icons a:nth-child(3):hover { background-color: #e1306c; color: #fff } .modal-body .icons a:nth-child(4) { color: #25d366; border-color: #bef4d2 } .modal-body .icons a:nth-child(4):hover { background-color: #25d366; color: #fff } .modal-body .icons a:nth-child(5) { color: #0088cc; border-color: #b3e6ff } .modal-body .icons a:nth-child(5):hover { background-color: #0088cc; color: #fff } .modal-body .icons a:hover { border-color: transparent } .modal-body .icons a span { transition: all 0.09s ease-in-out } .modal-body .icons a:hover span { transform: scaleX(1.1) } .modal-body .field { margin: 15px 0px -5px 0px; height: 45px; border: 1px solid #dfdfdf; border-radius: 5px; padding: 0 5px } .modal-body .field.active { border-color: #7d2ae8 } .field span { width: 50px; font-size: 1.1rem } .field.active span { color: #7d2ae8 } .field input { border: none; outline: none; font-size: 0.89rem; width: 100%; height: 100% } .field button { padding: 5px 16px; color: #fff; background: #7d2ae8; border: 2px solid transparent; border-radius: 5px; font-weight: 500 } @media (max-width: 330px) { .modal-body .icons a { margin-right: 15px; width: 35px; height: 35px } }
+                      </style>
+                    </div>
+  
+                    <div class="profile-engagements"></div>
+                  </div>
+                </div>
+                {% endfor %} 
+              
+          {% if edd.has_next %}
+          <a class="read-more infinite-more-link" href="?page={{ edd.next_page_number }}"> </a>
+          {% endif %}
+          <div class="d-flex position-fixed loading " style="top: 35vh; left: 46vw; ">
+  
+            <!-- <div class="spinner-border text-primary loading" role="status">
+              <span class="sr-only">Loading...</span>
+            </div> -->
+  
+          </div>
+  
+          <script> //copy share
+            document.addEventListener('DOMContentLoaded', function (e) {
+              let field = document.querySelector('.field');
+              let input = document.querySelector('input');
+              let copyBtn = document.querySelector('.field button');
+  
+              copyBtn.onclick = () => {
+                input.select();
+                if (document.execCommand("copy")) {
+                  field.classList.add('active');
+                  copyBtn.innerText = 'Copied';
+                  setTimeout(() => {
+                    field.classList.remove('active');
+                    copyBtn.innerText = 'Copy';
+                  }, 3500)
+                }
+              }
+            })
+          </script>
+  
+          <script>
+  
+            function myidL2(params ) {
+              $.ajax({
+                type: 'POST', 
+                url: `{% url "boards:like" %}`,
+                data: {
+                  postid: params,
+                  csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                  action: 'post'
+                },
+                success: function (json) {
+                  document.getElementById("like" + params).innerHTML = ' ' + json['result'];
+                },
+                error: function (xhr, errmsg, err) {
+  
+                }
+              });
+            }
+
+
+            
+            function myidL(params ) {
+              $.ajax({
+                type: 'POST', 
+                url: `{% url "accounts:like" %}`,
+                data: {
+                  postid: params,
+                  csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                  action: 'post'
+                },
+                success: function (json) {
+                  document.getElementById("like" + params).innerHTML = ' ' + json['result'];
+                },
+                error: function (xhr, errmsg, err) {
+  
+                }
+              });
+            }
+          </script>
+              </div>
+
+
+
+              
+            </div>
+            
+    
+    
+
+    <!--Pagination-->
+    <nav aria-label="Page navigation example">
+      <ul class="pagination justify-content-center">
+      {% if posts.has_previous %}
+          <li >
+          <a class="read-more" href="?page={{ posts.previous_page_number }}">{% trans "سابق" %}</a>
+        </li>
+      {% else %}
+          <li class=" disabled">
+          <a class="read-more" href="#" tabindex="-1" aria-disabled="true">{% trans "سابق" %}</a>
+        </li>
+      {% endif %} 
+      {% if posts.has_next %}
+          <li >
+          <a class="read-more" href="?page={{ posts.next_page_number }}">{% trans "التالي" %}</a>
+        </li>
+      {% else %}
+          <li class=" disabled">
+          <a class="read-more" href="#" tabindex="-1" aria-disabled="true">{% trans "التالي" %}</a>
+
+        </li>
+      {% endif %}
+    </ul>
+  </nav>
+  <!--end of Pagination-->
+    
+    
+          </div>
+          <div class="col-md-3">
+            
+
+            
+    <nav class=" "> 
+      <div class="  badge bg-info" style="font-size: 22px;">قد يعجبك </div>
+        <ul class="nav justify-content-center py-1 ">
+            
+            {% for post in random_items %}
+            <li li style="width: 200px;">
+              
+        <a href="{{post.get_absolute_url}}"><img class="bg-light read-more p-0 col-4" src="{{post.image.url}}" width="100px" height="60px"> </a>
+        
+              <a href="{{post.get_absolute_url}}" class="  col-8 read-more  shadow-lg ">
+                {% if post.title|length > 40 %}
+                {{post.title|slice:'35'}} ..
+                {% else %}
+                {{post.title}}
+                {% endif %}
+              </a>
+            </li>
+            {% endfor %}
+        </ul>
+    </nav>
+
+          
+          </div>
+        </div>
+      </div>
+    </div>
+{% include "base/footer.html" %}
+{% endblock %}

@@ -1,0 +1,286 @@
+{% extends "../base/base.html" %}
+{% block title %}Users Favourties{% endblock %}
+{% block content %}
+{% load i18n %}
+{% include "../base/nav-main.html" %}
+<div class="container read-more2">
+    <section class="jumbotron text-center read-more2">
+        <div class="container">
+            <h1>{% trans 'حفظ المستخدمون منشوراتهم المفضلة' %}</h1>
+            <p class=" read-more2">{% trans 'هنا يمكنك إزالة أو عرض المشاركات المفضلة التي أضفتها' %}</p>
+        </div>
+    </section>
+
+
+
+
+
+
+
+
+              
+      <div class="row infinite-container">
+        {% for e in new %}
+
+        <div class="feed-post infinite-item my-1 col-6 " id="removefav{{e.id}}">
+          <div class="p-2  read-more2">
+            <div class="d-flex flex-row justify-content-between align-items-start profile">
+              <div class="d-flex align-items-center">
+                <img class="rounded-circle  " src="{{ e.author.profile.avatar.url }}" width="50" height="50">
+                <div class="d-flex flex-column ml-2">
+                  <a href="{% url 'blog:post_user' e.author.profile.slug %}">{{ e.author.profile.fullName }}</a><span class="time">{{ e.publish }}</span>
+                  
+                </div>
+              </div>
+
+
+              {% if e.author.profile.slug == request.user.profile.slug %}
+              <div class="dropdown">
+                <button class="btn " type="button" id="dropdownMenuButton" data-toggle="dropdown"
+                  aria-haspopup="true" aria-expanded="false">
+                  <i class="fa fa-ellipsis-h text-black-50 mt-2"></i>
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  {% if e.nm == '2' %}
+                    
+                  <a href="{% url  'boards:post-update' e.id %}" class="dropdown-item">تحدث</a>
+                  <a href="{% url  'boards:post-delete' e.id %}" class="dropdown-item">حذف</a>
+                  {% else %}
+                  <a href="{% url  'crud:post-update' e.id %}" class="dropdown-item">تحدث</a>
+                  <a href="{% url  'crud:post-delete' e.id %}" class="dropdown-item">حذف</a>
+                  {% endif %}
+                  
+                    
+                </div>
+              </div>
+              {% endif %}
+
+            </div>
+
+            <div class="feed-image">
+
+              <a class="content text-center fontd" href="{{e.get_absolute_url}}">
+                <p class="p-0 m-0 ">{{ e.title }} ...</p>
+              </a>
+              
+
+                {% if not '/media/Topics/default.jpg' in e.image.url %}
+              <a href="{{e.get_absolute_url}}">
+                {% if not '/media/Topics/default.jpg' in e.image.url %}
+                    {% if not 'video' in e.video_or_article %}
+                    <img style="width: 100%;height: 272px;" src="{{ e.image.url }}" />
+                    
+                    {% endif %}
+      
+                  {% if 'video' in e.video_or_article %}
+                  <div class="img-wrapper">
+                    <img style="width: 100%;height: 272px;" src="{{ e.image.url }}" />
+                    <div class="img-overlay">
+                      <i class="fa fa-play" aria-hidden="true" style="font-size: 52px; color: whitesmoke"></i>
+                    </div>
+                  </div>
+                  {% endif %}
+                {% endif %}
+                
+              </a>
+                {% endif %}
+
+            </div>
+            <div class="row justify-content ">
+              
+
+          <div class="col" style="color: cornflowerblue;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
+              <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
+              <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
+            </svg>
+            <samp>{{e.views }}</samp>
+          </div>
+          {% if user.is_authenticated %}
+          
+          
+        {% if request.user in e.favourites.all %} 
+        <div class="col">
+          <button    onclick="{% if e.nm in '1' %} favRemove('{% url 'accounts:favourite_add' e.id %}',this.id )  {% else %} fav('{% url 'Boards:favourite_add' e.id %}',this.id ) {% endif %}" id="fav{{ e.id }}"  class="text-dark"style="border: none; background: none;">
+            <svg style="color: deepskyblue;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark-x" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M6.146 5.146a.5.5 0 0 1 .708 0L8 6.293l1.146-1.147a.5.5 0 1 1 .708.708L8.707 7l1.147 1.146a.5.5 0 0 1-.708.708L8 7.707 6.854 8.854a.5.5 0 1 1-.708-.708L7.293 7 6.146 5.854a.5.5 0 0 1 0-.708z"></path>
+              <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"></path>
+            </svg>
+          </button>
+        </div>
+        {% endif %}
+
+        
+          <div class="col" >
+            
+
+            
+
+            <span onclick="{% if e.nm in '1' %} myidL( {{e.id}} ) {% else %} myidL2( {{e.id}} ) {% endif %}" class="btn p-0" style="color: #FF5700; background-color: #fdd9ce; border-radius: 13px;"><i class="fa fa-heart " id="like{{e.id}}">
+                {{e.like_count}}</i> </span>
+          </div>
+          {% else %}
+          <a href="{% url 'account_signup' %}" class="col read-more2">
+            <span class=" col-4"><i class="fa fa-heart"> </i> <span> {{e.like_count}} </span> </span>
+
+          </a>
+          {% endif %}
+
+              <div class=" read-more2 col" ><i class="fa fa-comments"  style=" background-color: #daf1bc;"></i>
+                 <span style="color: #7bb32e;" > {{e.comments.all.count }}  </span> </div>
+
+              <!-- Button trigger modal -->
+              <button type="button" class="btn p-0 read-more2 col"  style="color:#4c6ef5;background-color: aliceblue" data-toggle="modal" data-target="#exampleModal2">
+                <i class="fa fa-share fa-lg ">  </i><span> Share </span>
+              </button>
+
+              <!-- Modal -->
+              <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="myModelLabel">Share Modal</h5> <button type="button"
+                        class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <p>Share this link via</p>
+                      
+                      <div class="d-flex align-items-center icons"> 
+                        <a href="http://www.facebook.com/sharer.php?u=https://{{request.get_host }}{% url 'boards:topic_single' e.slug %}"
+                        onclick="window.open(this.href, 'facebookwindow','left=20,top=20,width=600,height=700,toolbar=0,resizable=1'); return false;" class="fs-5 d-flex align-items-center justify-content-center"> <span class="fab fa-facebook-f"></span> </a> 
+                        <a href="http://twitter.com/intent/tweet?text={{ e.title }} https://{{request.get_host }}{% url 'boards:topic_single' e.slug %}"
+                        onclick="window.open(this.href, 'twitterwindow','left=20,top=20,width=600,height=300,toolbar=0,resizable=1'); return false;" class="fs-5 d-flex align-items-center justify-content-center"> <span class="fab fa-twitter"></span> </a> 
+                         
+                        <a href="whatsapp://send?text={{ e.title }} https://{{request.get_host }}{% url 'boards:topic_single' e.slug %}" class="fs-5 d-flex align-items-center justify-content-center"> <span class="fab fa-whatsapp"></span> </a> 
+                             
+                            </div>
+                      <p>Or copy link</p>
+                      <div class="field d-flex align-items-center justify-content-between"> <span
+                          class="fas fa-link text-center"></span> <input type="text" value="https://{{request.get_host }}{% url 'boards:topic_single' e.slug %}">
+                        <button>Copy</button> </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <style>
+                #shareBtn { letter-spacing: 2px; font-weight: 600; box-shadow: none; background-color: #eee; color: #7d2ae8; border: none } .modal { top: 20% } .btn-close { box-shadow: none; border: none; outline: none } .modal-body .icons { margin: 15px 0px 20px 0px } .modal-body .icons a { text-decoration: none; border: 1px solid transparent; width: 40px; height: 40px; border-radius: 50%; margin-right: 20px; transition: all 0.3s ease-in-out } .modal-body .icons a:nth-child(1) { color: #1877F2; border-color: #B7D4FB } .modal-body .icons a:nth-child(1):hover { background-color: #1877F2; color: #fff } .modal-body .icons a:nth-child(2) { color: #46C1F6; border-color: #b6e7fc } .modal-body .icons a:nth-child(2):hover { background-color: #46C1F6; color: #fff } .modal-body .icons a:nth-child(3) { color: #e1306c; border-color: #f5bccf } .modal-body .icons a:nth-child(3):hover { background-color: #e1306c; color: #fff } .modal-body .icons a:nth-child(4) { color: #25d366; border-color: #bef4d2 } .modal-body .icons a:nth-child(4):hover { background-color: #25d366; color: #fff } .modal-body .icons a:nth-child(5) { color: #0088cc; border-color: #b3e6ff } .modal-body .icons a:nth-child(5):hover { background-color: #0088cc; color: #fff } .modal-body .icons a:hover { border-color: transparent } .modal-body .icons a span { transition: all 0.09s ease-in-out } .modal-body .icons a:hover span { transform: scaleX(1.1) } .modal-body .field { margin: 15px 0px -5px 0px; height: 45px; border: 1px solid #dfdfdf; border-radius: 5px; padding: 0 5px } .modal-body .field.active { border-color: #7d2ae8 } .field span { width: 50px; font-size: 1.1rem } .field.active span { color: #7d2ae8 } .field input { border: none; outline: none; font-size: 0.89rem; width: 100%; height: 100% } .field button { padding: 5px 16px; color: #fff; background: #7d2ae8; border: 2px solid transparent; border-radius: 5px; font-weight: 500 } @media (max-width: 330px) { .modal-body .icons a { margin-right: 15px; width: 35px; height: 35px } }
+              </style>
+            </div>
+
+            <div class="profile-engagements"></div>
+          </div>
+        </div>
+        {% endfor %} 
+      
+  {% if edd.has_next %}
+  <a class="read-more infinite-more-link" href="?page={{ edd.next_page_number }}"> </a>
+  {% endif %}
+  <div class="d-flex position-fixed loading " style="top: 35vh; left: 46vw; ">
+
+    <!-- <div class="spinner-border text-primary loading" role="status">
+      <span class="sr-only">Loading...</span>
+    </div> -->
+
+  </div>
+
+  <script> //copy share
+    document.addEventListener('DOMContentLoaded', function (e) {
+      let field = document.querySelector('.field');
+      let input = document.querySelector('input');
+      let copyBtn = document.querySelector('.field button');
+
+      copyBtn.onclick = () => {
+        input.select();
+        if (document.execCommand("copy")) {
+          field.classList.add('active');
+          copyBtn.innerText = 'Copied';
+          setTimeout(() => {
+            field.classList.remove('active');
+            copyBtn.innerText = 'Copy';
+          }, 3500)
+        }
+      }
+    })
+  </script>
+
+  <script>
+
+    function myidL2(params ) {
+      $.ajax({
+        type: 'POST', 
+        url: `{% url "boards:like" %}`,
+        data: {
+          postid: params,
+          csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+          action: 'post'
+        },
+        success: function (json) {
+          document.getElementById("like" + params).innerHTML = ' ' + json['result'];
+        },
+        error: function (xhr, errmsg, err) {
+
+        }
+      });
+    }
+
+
+    
+    function myidL(params ) {
+      $.ajax({
+        type: 'POST', 
+        url: `{% url "accounts:like" %}`,
+        data: {
+          postid: params,
+          csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+          action: 'post'
+        },
+        success: function (json) {
+          document.getElementById("like" + params).innerHTML = ' ' + json['result'];
+        },
+        error: function (xhr, errmsg, err) {
+
+        }
+      });
+    }
+
+
+
+    
+// fav start
+function favRemove(params,classd) { 
+      document.getElementById(classd).innerHTML = '<a href="/account/profile/favourites/"><svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-bookmark-check" fill="currentColor" xmlns="http://www.w3.org/2000/svg"> <path fill-rule="evenodd" d="M4.5 2a.5.5 0 0 0-.5.5v11.066l4-2.667 4 2.667V8.5a.5.5 0 0 1 1 0v6.934l-5-3.333-5 3.333V2.5A1.5 1.5 0 0 1 4.5 1h4a.5.5 0 0 1 0 1h-4z"></path> <path fill-rule="evenodd" d="M15.854 2.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L12.5 4.793l2.646-2.647a.5.5 0 0 1 .708 0z"></path> </svg>';
+      $.ajax({
+        type: 'POST',
+        url: params,
+        data: {
+          postid: params,
+          csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+          action: 'post'
+        },
+        success: function (json) { 
+          console.log( `remove${classd}` )
+          document.getElementById(`remove${classd}`  ).remove();
+        },
+        error: function (xhr, errmsg, err) {
+  
+        }
+      });
+    }
+ // Fav end
+  
+ 
+
+  </script>
+      </div>
+
+
+
+      
+
+
+
+ 
+</div>
+{% include "base/footer.html" %}
+{% endblock %}

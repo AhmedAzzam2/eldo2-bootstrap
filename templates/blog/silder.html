@@ -1,0 +1,10 @@
+
+    <ul class="nav nav-tabs shadow-lg">
+        {% for node in l_posts %}  
+        <a class="nav-link read-more" href="/ar{{node.get_url_categories}}" style="padding: 5px;"><img class="rounded-circle shadow-lg" src="{{node.image.url}}" width="33px" height="33px" /><span>{{ node.name }}</span></a> 
+        {% endfor %}
+    
+      
+    </ul>
+    
+      

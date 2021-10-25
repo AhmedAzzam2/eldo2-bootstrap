@@ -1,0 +1,61 @@
+ 
+    {% extends "../base/base.html" %}
+    {% block title %}
+    all post {{ user.username }}
+    {% endblock %}
+    {% block content %}
+    {% include "base/nav-main.html" %}
+ 
+    <div class="row">
+      
+<div class="col-md-2">
+ 
+        <div class="card card-personal shadow-lg">
+  
+          <img class="read-more rounded-circle card-img-top" src="{% for data in avatar %}{{ data.avatar.url }} {% endfor %}" /> 
+      
+          <div class="card-body">
+            <a>
+              <h4 class="card-title title-one">{{ user.first_name }} </h4>
+            </a> 
+            <a href="/crud/all" class="btn btn-outline-primary mb-2 shadow"> <i class="fas fa-tachometer-alt"></i> جمع المقلات</a> 
+            <a href="/crud/new" class="btn btn-outline-primary mb-2 shadow"> <i class="fas fa-plus-square"></i>   post/video</a><br>
+            <a href="/crud/cat/all" class="btn btn-outline-danger mb-2 shadow"> <i class="fas fa-hotel"></i> جمع الاقسام</a><br>
+            <a href="/crud/cat/new" class="btn btn-outline-danger mb-2 shadow"> <i class="fas fa-plus-square"></i> اضاف قسم</a>
+          </div>
+  
+        </div>
+</div>
+    <div class="col-md-10 fontd">
+      <div id="news-slider" >
+        <h1> جمع المقلات , الفيديوهات</h1>
+        <div class="row">
+    
+          {% for post in user_posts %}
+    
+          
+        <div class="post-slide  col-md-3">
+          <img src="{{post.image.url}}" style="max-height: 222px; width: 251px;" class="shadowX"> 
+          <div class="post-content">
+            <h3 class="post-title">
+          <a href="{{post.get_absolute_url}}"> <span class="read-more">{{post.title|truncatechars:50}}</span></a>
+ 
+            </h3>
+            <a href="{{post.get_absolute_url}}" class="read-more"><span class="badge badge-danger">{{ post.category|title }} </span> <i class="fa fa-heart"></i> {{post.like_count}}  </a>
+
+          <a href="/crud/{{post.id}}/update" class="read-more">تحدث</a>
+          <a href="/crud/{{post.id}}/delete" class="read-more">حذف</a>
+
+            </div>
+        </div>
+        
+    {% endfor %}
+      </div>
+    </div>
+    </div>
+ 
+    </div>
+    
+ 
+{% include "base/footer.html" %}
+{% endblock %}

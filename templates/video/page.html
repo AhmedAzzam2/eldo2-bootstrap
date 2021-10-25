@@ -1,0 +1,11 @@
+{% extends "../base/base.html" %}
+{% block title %}{{catlist.page.title }} - الدكـتور{% endblock %}
+{% block content %}
+{% include "base/nav-main.html" %}
+<div class="container pt-5">
+
+{{catlist.page.description|safe }}
+</div>
+
+{% include "base/footer.html" %}
+{% endblock %}

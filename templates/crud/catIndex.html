@@ -1,0 +1,135 @@
+ 
+    {% extends "../base/base.html" %}
+    {% block title %}
+    all post {{ user.username }}
+    {% endblock %}
+    {% block content %}
+    {% include "base/nav-main.html" %}
+ 
+    {% load i18n %}
+    <div class="container" >
+      <H1>جمع الاقسام</H1>
+      <div class="row">
+        
+        
+         <div> 
+          <a href="{% url 'crud:all' %}" class="btn shadow" style="border-radius:44px 0 0 0;"> <i class="fas fa-tachometer-alt"></i> جمع المقلات</a> 
+          <a href="{% url 'crud:new_post' %}" class="btn shadow" style="border-radius:44px 0 0 0;"> <i class="fas fa-plus-square"></i>   post/video</a> 
+          <a href="{% url 'crud:all-cat' %}" class="btn shadow bg-white" style="border-radius:44px 0 0 0;"> <i class="fas fa-hotel"></i> جمع الاقسام</a> 
+          <a href="{% url 'crud:new-cat' %}" class="btn shadow" style="border-radius:44px 0 0 0;"> <i class="fas fa-plus-square"></i> اضاف قسم</a>
+
+         </div>
+   
+
+    <table class="table" style="background: #F4F4FB;">
+      <thead>
+        <tr>
+          <th scope="col">img</th> 
+          <th scope="col">category</th>
+          <th scope="col">action</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        
+        {% load mptt_tags %}
+        {% recursetree user_posts %}
+  <tr>
+    <td> <img src="{{node.image.url}}" style="height: 22px; width: 71px;" class="shadowX"> </td>
+    <td> <a href="{{node.get_absolute_url}}"> <span class="shadow">{{node.name|truncatechars:50}}</span></a> </td>
+    <td>
+      <a href="/crud/cat/{{node.id}}/update" class="btn btn-info">تحدث</a>
+      <a href="/crud/cat/{{node.id}}/delete" class="btn btn-danger">حذف</a>
+</td>
+  </tr> 
+      {% if not node.is_leaf_node %}
+      {{ children }}
+      {% endif %}
+
+      {% endrecursetree %}
+
+       
+        </tr>
+      </tbody>
+    </table>
+    
+      </div>
+    </div>
+    
+    
+<style>
+  table {
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  table td, table th {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+ tr:nth-child(even){background-color: #ffffff;}
+  
+  table tr:hover {background-color: #ddd;}
+  
+  table th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #ffffff;
+    color: rgb(0, 0, 0);
+  }
+  </style>
+    
+ 
+    <!--Pagination-->
+    <nav aria-label="Page navigation example">
+      <ul class="pagination justify-content-center">
+      {% if user_posts.has_previous %}
+          <li >
+          <a class="read-more" href="?page={{ user_posts.previous_page_number }}"> </a>
+        </li>
+      {% else %}
+          <li class=" disabled">
+          <a class="read-more" href="#" tabindex="-1" aria-disabled="true">{% trans "سابق" %}</a>
+        </li>
+      {% endif %}
+
+      {% if user_posts.number|add:'-4' > 1 %}
+          <li ><a class="read-more" href="?page={{ user_posts.number|add:'-5' }}">&hellip;</a></li>
+      {% endif %}
+
+      {% for i in user_posts.paginator.page_range %}
+          {% if user_posts.number == i %}
+              <li class="  active read-more" aria-current="page">
+            <span class="read-more">
+              {{ i }}
+              <span class="sr-only">(current)</span>
+            </span>
+          </li>
+          {% elif i > user_posts.number|add:'-5' and i < user_posts.number|add:'5' %}
+               <li ><a class="read-more" href="?page={{ i }}">{{ i }}</a></li>
+          {% endif %}
+      {% endfor %}
+
+      {% if user_posts.paginator.num_pages > user_posts.number|add:'4' %}
+         <li ><a class="read-more" href="?page={{ user_posts.number|add:'5' }}">&hellip;</a></li>
+      {% endif %}
+
+      {% if user_posts.has_next %}
+          <li >
+          <a class="read-more" href="?page={{ user_posts.next_page_number }}">{% trans "التالي" %}</a>
+        </li>
+      {% else %}
+          <li class=" disabled">
+          <a class="read-more" href="#" tabindex="-1" aria-disabled="true">{% trans "التالي" %}</a>
+
+        </li>
+      {% endif %}
+    </ul>
+  </nav>
+  <!--end of Pagination-->
+ 
+{% include "base/footer.html" %}
+{% endblock %}

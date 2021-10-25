@@ -1,0 +1,350 @@
+{% extends "../base/base.html" %}
+{% load static  %}
+
+{% block title %} {{ instance.name }} {% endblock %}
+
+{% block content %}
+{% load post_tag %}
+
+{% include "base/nav-main.html" %}
+<div class="container-fluid">
+
+<nav aria-label="breadcrumb ">
+  <ol class="breadcrumb fontd shadow">
+<li class="breadcrumb-item read-more"><a href="/">🏠</a></li>
+
+{% for i,v in instance.get_slug_list_for_categories.items %}
+<li class="breadcrumb-item read-more fontd"><a href="/a/{{ i }}" class=" fontd ">{{ v | get_name }} </a></li>
+
+{% endfor %}
+
+<!-- <li class="breadcrumb-item read-more" aria-current="page">{{ post.title }}</li> -->
+  </ol>
+</nav>
+
+
+    <br>
+    <div class="text-center"><h2>{{instance.name}}</h2></div>
+     
+
+
+    {% if  instance.children.all %}
+        <div class="row justify-content-md-center">
+        {% for i in instance.children.all %}
+
+            <a href="{{ i.slug }}" class="col-md-3 m-2 " >  
+              <img src="{{ i.image.url }}" class="card-img rounded-pill read-more" alt="{{ i.name }}"  style=" height: 100px; filter: blur(9px);">
+              <div class="card-img-overlay justify-content-center">
+                <h5 class="  rounded mx-auto d-block read-more" style="color: #28a745; font-weight: bolder;">{{ i.name }}</h5>
+            </div>  </a> 
+        {% endfor %}
+      </div>
+    {% endif %}
+
+
+  </div>
+
+
+
+
+
+    
+  <div class="album py-5 fontd">
+ 
+
+
+    <!-- <style>
+      
+      .card.shadow {
+          border-radius: 56px;
+      }
+      #news-slider{
+          margin-top: 80px;
+      }
+      .post-slide{
+          background: #fff;
+          margin: 20px 15px 20px;
+          border-radius: 15px;
+          padding-top: 1px;
+          box-shadow: 0px 14px 22px -9px #bbcbd8;
+      }
+      .post-slide .post-img{
+          position: relative;
+          overflow: hidden;
+          border-radius: 10px;
+          margin: -12px 15px 8px 15px;
+          margin-left: -10px;
+          height: 222px;
+      }
+      .post-slide .post-img img{
+          width: 100%;
+          height: auto;
+          transform: scale(1,1);
+          transition:transform 0.2s linear;
+      }
+      .post-slide:hover .post-img img{
+          transform: scale(1.1,1.1);
+      }
+      .post-slide .over-layer{
+          width:100%;
+          height:100%;
+          position: absolute;
+          top:0;
+          left:0;
+          opacity:0;
+          background: linear-gradient(-45deg, rgba(6,190,244,0.75) 0%, rgba(45,112,253,0.6) 100%);
+          transition:all 0.50s linear;
+      }
+      .post-slide:hover .over-layer{
+          opacity:1;
+          text-decoration:none;
+      }
+      .post-slide .over-layer i{
+          position: relative;
+          top:45%;
+          text-align:center;
+          display: block;
+          color:#fff;
+          font-size:25px;
+      }
+      .post-slide .post-content{
+          background:#fff;
+          padding: 2px 20px 40px;
+          border-radius: 15px;
+      }
+      .post-slide .post-title a{
+          font-size:15px;
+          font-weight:bold;
+          color:#333;
+          display: inline-block;
+          text-transform:uppercase;
+          transition: all 0.3s ease 0s;
+      }
+      .post-slide .post-title a:hover{
+          text-decoration: none;
+          color:#3498db;
+      }
+      .post-slide .post-description{
+          line-height:24px;
+          color:#808080;
+          margin-bottom:25px;
+      }
+      .post-slide .post-date{
+          color:#a9a9a9;
+          font-size: 14px;
+      }
+      .post-slide .post-date i{
+          font-size:20px;
+          margin-right:8px;
+          color: #CFDACE;
+      }
+      .read-more{
+          padding: 7px 20px;
+          float: right;
+          font-size: 12px;
+          background: #ffffff;
+          color: #000000;
+          box-shadow: 0px 10px 20px -10px #1376c5;
+          border-radius: 25px;
+          text-transform: uppercase;
+      }
+      .post-slide .read-more:hover{
+          background: #3498db;
+          text-decoration:none;
+          color:#fff;
+      }
+      .owl-controls .owl-buttons{
+          text-align:center;
+          margin-top:20px;
+      }
+      .owl-controls .owl-buttons .owl-prev{
+          background: #fff;
+          position: absolute;
+          top:-13%;
+          left:15px;
+          padding: 0 18px 0 15px;
+          border-radius: 50px;
+          box-shadow: 3px 14px 25px -10px #92b4d0;
+          transition: background 0.5s ease 0s;
+      }
+      .owl-controls .owl-buttons .owl-next{
+          background: #fff;
+          position: absolute;
+          top:-13%;
+          right: 15px;
+          padding: 0 15px 0 18px;
+          border-radius: 50px;
+          box-shadow: -3px 14px 25px -10px #92b4d0;
+          transition: background 0.5s ease 0s;
+      }
+      .owl-controls .owl-buttons .owl-prev:after,
+      .owl-controls .owl-buttons .owl-next:after{
+          content:"\f104";
+          font-family: FontAwesome;
+          color: #333;
+          font-size:30px;
+      }
+      .owl-controls .owl-buttons .owl-next:after{
+          content:"\f105";
+      }
+      @media only screen and (max-width:1280px) {
+          .post-slide .post-content{
+              padding: 0px 15px 25px 15px;
+          }
+      }
+      </style> -->
+    
+    <script>
+      
+      $(document).ready(function() {
+          $("#news-slider").owlCarousel({
+            loop:false,
+        stagePadding: 20,
+          margin:20,
+          nav:true,
+        navText : ['<span class="icon left">‹</span>','<span class="icon right">›</span>'],
+          responsive:{
+              0:{
+                  items:1
+              },
+              640:{
+                  items:2
+              },
+            960:{
+                  items:3
+              },
+              1200:{
+                  items:3
+              }
+          }
+          });
+      });
+      </script>
+    
+    
+    {% load mptt_tags %} 
+          <div class="container2">
+            <div class="row">
+              <div class="col-md-1">
+        
+                {% load mptt_tags %} 
+              </div>
+              <div class="col-md-8">
+                <div class="row">
+              <div class="col-12 pb-1 text-center read-more">
+                <h1>  {{instance.name}} </h1>
+              </div>
+              {% for post in instance.post_set.all %}
+              <div class="card shadow" style="margin: 7px; width: 272px;">
+    
+    
+    
+                <div class="d-flex" style="direction: ltr;">
+    
+                  {% csrf_token %}
+    
+    
+    
+    
+    
+                  {% if request.user.is_authenticated %}
+                  <div class="pr-2">
+                    <span class="" id="like_count{{post.id}}">{{post.like_count}}</span>
+                    <button class="btn btn-link text-dark p-0 border-0 btn-outline-light" id="like-button"
+                      onclick="myid({{post.id}})" value="{{post.id}}">
+                      <svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-heart" fill="currentColor"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                          d="M8 2.748l-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z" />
+                      </svg>
+                    </button>
+                  </div>
+                  {% if request.user in post.favourites.all %}
+                  <div>
+                    <a href="{% url 'accounts:favourite_list' %}" class="text-dark">
+                      <svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-bookmark-check" fill="currentColor"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                          d="M4.5 2a.5.5 0 0 0-.5.5v11.066l4-2.667 4 2.667V8.5a.5.5 0 0 1 1 0v6.934l-5-3.333-5 3.333V2.5A1.5 1.5 0 0 1 4.5 1h4a.5.5 0 0 1 0 1h-4z" />
+                        <path fill-rule="evenodd"
+                          d="M15.854 2.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L12.5 4.793l2.646-2.647a.5.5 0 0 1 .708 0z" />
+                      </svg>
+                    </a>
+                  </div>
+                  {% else %}
+                  <div>
+                    <a href="{% url 'accounts:favourite_add' post.id %}" class="text-dark">
+                      <svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-bookmark-plus" fill="currentColor"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                          d="M4.5 2a.5.5 0 0 0-.5.5v11.066l4-2.667 4 2.667V8.5a.5.5 0 0 1 1 0v6.934l-5-3.333-5 3.333V2.5A1.5 1.5 0 0 1 4.5 1h4a.5.5 0 0 1 0 1h-4zm9-1a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1H13V1.5a.5.5 0 0 1 .5-.5z" />
+                        <path fill-rule="evenodd" d="M13 3.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0v-2z" />
+                      </svg>
+                    </a>
+                  </div>
+                  {% endif %}
+                  {% else %}
+                  <div class="pr-2">
+                    <span class="" id="like_count">{{post.like_count}}</span>
+                    <a href="{% url 'accounts:register' %}" class="btn btn-link text-dark p-0 border-0 btn-outline-light"
+                      value="{{post.id}}">
+                      <svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-heart" fill="currentColor"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                          d="M8 2.748l-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z" />
+                      </svg>
+                    </a>
+                  </div>
+                  <div>
+                    <a href="{% url 'accounts:register' %}" class="text-dark"> <svg width="1.5em" height="1.5em"
+                        viewBox="0 0 16 16" class="bi bi-bookmark-plus" fill="currentColor"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                          d="M4.5 2a.5.5 0 0 0-.5.5v11.066l4-2.667 4 2.667V8.5a.5.5 0 0 1 1 0v6.934l-5-3.333-5 3.333V2.5A1.5 1.5 0 0 1 4.5 1h4a.5.5 0 0 1 0 1h-4zm9-1a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1H13V1.5a.5.5 0 0 1 .5-.5z" />
+                        <path fill-rule="evenodd" d="M13 3.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0v-2z" />
+                      </svg></a>
+                  </div>
+                  {% endif %}
+                </div>
+    
+    
+                <a href="{{post.get_absolute_url}}"><img class="card-img-top w-100 d-block read-more p-0"
+                    src="{{post.image.url}}" style="height: 155px;" /></a>
+                <div class="card-body1">
+                  <a href="{{post.get_absolute_url}}"> <span class="read-more ">{{post.title|truncatechars:50}}</span></a>
+                </div>
+    
+                <div class="d-flex">
+                  <div class="d-flex">
+    
+                    <a href="{{post.get_absolute_url}}" style="padding: 5px;"><img class="rounded-circle shadow-lg"
+                        src="{{ post.category.image.url }}" width="23px" height="23px" /><span><span
+                          class="badge badge-danger read-more">{{ post.category|title }}</span></span></a>
+    
+                  </div>
+                  <div class="d-flex"></div>
+                </div>
+              </div>
+              {% endfor %}
+              
+            </div>
+            
+          </div>
+          <div class="col-3">
+            
+    
+            {% load post_tag %}
+    
+            {% latest_posts1 %}
+    
+          </div>
+        </div>
+    
+    {% include "base/footer.html" %}
+
+    {% endblock %}
+
+
+
+
+    

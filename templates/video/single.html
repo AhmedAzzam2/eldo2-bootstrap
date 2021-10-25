@@ -1,0 +1,464 @@
+{% extends "../base/base.html" %}
+
+{% load post_tag %}
+
+{% block title %}
+{{post.title}}
+{% endblock %}
+
+{% block content %}
+{% include "base/nav-main.html" %}
+
+
+<nav aria-label="breadcrumb ">
+  <ol class="breadcrumb fontd shadow">
+<li class="breadcrumb-item read-more"><a href="/">🏠</a></li>
+
+{% for i,v in post.get_slug_list_for_categories.items %}
+<li class="breadcrumb-item read-more fontd"><a href="/a/{{ i }}" class=" fontd ">{{ v | get_name }} </a></li>
+
+{% endfor %}
+
+<!-- <li class="breadcrumb-item read-more" aria-current="page">{{ post.title }}</li> -->
+  </ol>
+</nav>
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=PT+Serif:wght@400;700&display=swap');
+
+  .h1 {
+    font-family: 'PT Serif', serif;
+    font-size: 2.55rem;
+    line-height: 2.6rem;
+    letter-spacing: -0.063px;
+  }
+
+  h2 {
+    font-family: 'PT Serif', serif;
+    font-size: 1.9rem;
+    line-height: 2.6rem;
+    letter-spacing: -0.063px;
+    font-weight: 700;
+    padding-top: 48px;
+  }
+
+  p {
+    font-family: 'PT Serif', serif;
+    line-height: 2rem;
+    font-size: 1.3rem
+  }
+
+  @media screen and (min-width: 600px) {
+    .children form {
+      margin-left: -48px;
+      /* will touch very left side */
+    }
+
+    .children .children form {
+      margin-left: -96px;
+      /* will touch very left side */
+    }
+  }
+
+  .avatar_single {
+    height: 48px;
+    width: 48px;
+    background-color: #000;
+    border-radius: 50%;
+    display: inline-block;
+
+  }
+
+  .smaller {
+    font-size: 0.8rem;
+  }
+
+  .thumb-active {
+    fill: blue
+  }
+  .df,.df img {
+    box-shadow: 1px 1px 8px;
+    margin-bottom: 9px;
+    border-radius: 15px;
+    background: white;
+}
+</style>
+<div class="container-fluid"> 
+<div class="  read-more col-md-12 " style="font-size: 22px;">قد يعجبك أيضاً </div>
+<div class="row justify-content-md-center mt-7">
+  <div class="stories"> 
+     <ul> 
+      {% for node in random_items %}
+      <li>
+         <a href="{{node.get_absolute_url}}">
+            <div class="stories-card">
+               <div style="background-image:url({{node.image.url}})" class="stories-img"></div>
+               <div class="add-storie">
+                  <div style="background-image:url({{node.image.url}})" class="avatar"></div>
+               </div>
+               <div class="stories-by">
+                  <h5>{{ node.title }}</h5>
+               </div>
+            </div>
+         </a>
+      </li>
+   
+      {% endfor %}
+   
+     </ul>
+  </div>
+   </div>
+  </div>
+
+   
+<style>
+  
+  .stories .head {
+    margin-bottom:20px;
+  }
+  .stories h4 {
+    color:#4e5156;
+    display: contents;
+  }
+  
+  .stories a {
+    float:right;
+    font-weight:400;
+    color:#1976f3;
+    text-decoration:none;
+  }
+  .stories ul {
+    margin:0;
+    padding:0;
+    list-style:none;
+  }
+  
+  .stories ul li {
+    float:left;
+    margin-right:10px;
+  }
+  .stories ul li:last-child {
+    margin-right:0px;
+  }
+  .stories .stories-card {
+    width:130px;
+    height:220px;
+    position:relative;
+    overflow:hidden;
+    border-radius:10px;
+    box-shadow:0 3px 6px rgba(50, 50, 93, 0.1);
+  }
+  .stories .stories-card .stories-img {
+    width:100%;
+    height:100%;
+    background-size:cover;
+    background-position:center;
+  }
+  .stories .stories-card .stories-by {
+    position:absolute;
+    bottom:0;
+    color:#fff;
+    background:linear-gradient(to bottom, transparent 0, #000000db 99%, #000000eb 100%);
+    padding:13px 15px;
+    font-size:18px;
+    line-height:25px; 
+  }
+  .stories .stories-card .stories-by h5 {
+    margin:0;
+    font-weight:300;
+  }
+  .stories .stories-card .add-storie {
+    position:absolute;
+    top:0;
+    width:32px;
+    height:32px;
+    text-align:center;
+    line-height:32px;
+    margin:15px;
+    background:#0000004a;
+    color:#fff;
+    border:2px solid #fff;
+    border-radius:50px;
+    overflow:hidden;
+    background-size:cover;
+    background-position:center;
+  }
+  .stories .stories-card .add-storie .avatar {
+    width:100%;
+    height:100%;
+    background-size:cover;
+    background-position:center;
+  } 
+  .owl-stage-outer{
+     direction: ltr;
+  }
+  .owl-carousel .owl-nav button.owl-next, .owl-carousel .owl-nav button.owl-prev {
+      width: 35px;
+      height: 35px;
+      border-radius: 80px;
+      background-color: rgb(255, 255, 255);
+  }
+  </style>
+  
+  
+{% load mptt_tags %} 
+<nav aria-label="breadcrumb ">
+  <ol class="breadcrumb fontd shadow">
+<li class="breadcrumb-item read-more"><a href="/"></a></li>
+ 
+  </ol>
+</nav>
+<div class="container-fluid">
+  <div class="row justify-content-md-center "> 
+    <div class="col-md-2 fontd" >
+<div class="row justify-content-md-center">
+  
+
+  {% recursetree Category %}
+       
+
+  <a class="nav-link read-more" href="/category/{{node.slug}}" style="padding: 5px;"><img class="rounded-circle shadow-lg" src="{{node.image.url}}" width="33px" height="33px" /><span>{{ node.name }}</span></a> 
+  {% if not node.is_leaf_node %}  
+      {{ children }} 
+  {% endif %}
+          
+  {% endrecursetree %}
+
+
+</div>
+
+    </div>
+    <div class="col-md-7 fontd read-more p-0">
+      
+    <div class="col-md-12 d-flex justify-content-between">
+      <h1 class="h1">{{post.title}}</h1>
+    </div>
+    <div class="col-md-12 d-flex justify-content-between pt-3">
+      <div class="d-flex read-more">
+        <div><img class="avatar_single" src="{{ post.author.profile.avatar.url }}"></div>
+        <div class="pl-3 no-gutters">
+          <div class="col-12 no-gutters">{{ post.author|title }}</div>
+          <div class="col-12 no-gutters smaller text-muted">{{post.publish}}</div>
+        </div>
+      </div>
+      <div class="d-flex read-more" style="direction: ltr;">
+
+
+
+        {% csrf_token %}
+
+
+
+        {% if request.user.is_authenticated %}
+        <div class="pr-2">
+          <span class="" id="like_count">{{post.like_count}}</span>
+          <button class="btn btn-link text-dark p-0 border-0 btn-outline-light" id="like-button" value="{{post.id}}">
+            <svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-heart" fill="currentColor"
+              xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd"
+                d="M8 2.748l-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z" />
+            </svg>
+          </button>
+        </div>
+        {% if request.user in post.favourites.all %}
+        <div>
+          <a href="{% url 'accounts:favourite_list' %}" class="text-dark">
+            <svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-bookmark-check" fill="currentColor"
+              xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd"
+                d="M4.5 2a.5.5 0 0 0-.5.5v11.066l4-2.667 4 2.667V8.5a.5.5 0 0 1 1 0v6.934l-5-3.333-5 3.333V2.5A1.5 1.5 0 0 1 4.5 1h4a.5.5 0 0 1 0 1h-4z" />
+              <path fill-rule="evenodd"
+                d="M15.854 2.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L12.5 4.793l2.646-2.647a.5.5 0 0 1 .708 0z" />
+            </svg>
+          </a>
+        </div>
+        {% else %}
+        <div>
+          <a href="{% url 'accounts:favourite_add' post.id %}" class="text-dark">
+            <svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-bookmark-plus" fill="currentColor"
+              xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd"
+                d="M4.5 2a.5.5 0 0 0-.5.5v11.066l4-2.667 4 2.667V8.5a.5.5 0 0 1 1 0v6.934l-5-3.333-5 3.333V2.5A1.5 1.5 0 0 1 4.5 1h4a.5.5 0 0 1 0 1h-4zm9-1a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1H13V1.5a.5.5 0 0 1 .5-.5z" />
+              <path fill-rule="evenodd" d="M13 3.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0v-2z" />
+            </svg>
+          </a>
+        </div>
+        {% endif %}
+        {% else %}
+        <div class="pr-2">
+          <span class="" id="like_count">{{post.like_count}}</span>
+          <a href="{% url 'accounts:register' %}" class="btn btn-link text-dark p-0 border-0 btn-outline-light"
+            value="{{post.id}}">
+            <svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-heart" fill="currentColor"
+              xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd"
+                d="M8 2.748l-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z" />
+            </svg>
+          </a>
+        </div>
+        <div>
+          <a href="{% url 'accounts:register' %}" class="text-dark"> <svg width="1.5em" height="1.5em"
+              viewBox="0 0 16 16" class="bi bi-bookmark-plus" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd"
+                d="M4.5 2a.5.5 0 0 0-.5.5v11.066l4-2.667 4 2.667V8.5a.5.5 0 0 1 1 0v6.934l-5-3.333-5 3.333V2.5A1.5 1.5 0 0 1 4.5 1h4a.5.5 0 0 1 0 1h-4zm9-1a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1H13V1.5a.5.5 0 0 1 .5-.5z" />
+              <path fill-rule="evenodd" d="M13 3.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0v-2z" />
+            </svg></a>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+    <div class="col-md-12">
+    
+<div class="social ">
+  <a href="#" style="color: green;" id="share-wa" class="sharer button"><i  class="fa fa-2x fa-whatsapp"></i></a>
+ 
+<a href="#" id="share-fb" class="sharer button"><i class="fa fa-2x fa-facebook-square"></i></a>
+<a href="#" id="share-tw" class="sharer button"><i class="fa fa-2x fa-twitter-square"></i></a> 
+ </div>
+    </div>
+    <div class="col-md-12 pt-1" style="direction: ltr;">
+      <div class="col"> {{post.excerpt}} </div>
+      <div class="row justify-content-md-center">
+        <div class="col-1 read-more" style="font-size: 31px;">
+          <i class="fab fa-facebook"></i><i class="fab fa-twitter"></i><i class="fab fa-whatsapp"></i>
+        </div>
+        <div class="col-11">
+          
+      <img class="card-img-top read-more p-0" src="{{post.image.url}}" alt="{{ post.title }}">
+        </div>
+      </div>
+      <div class="col-12 text-center small text-muted pt-1">{{post.image_caption}}</div>
+
+ 
+      <div id="go1" class=" row mt-6" style="font-size: 20px; direction: rtl;">
+        <strong class="md:text-xl text-base mb-3">محتويات المقال (اختر للانتقال)</strong> 
+      <div id="go"></div>
+      </div>
+      <div class="col-12">{{post.content|safe}}</div>
+      <script>
+        var cont=0;
+var array= document.getElementsByTagName("h2");
+for (let index = 0; index < array.length; index++) {
+  cont++; 
+   document.getElementById('go').innerHTML += '<a class=" nav-link read-more m-2" href="#go'+index+'" ><span class="badge badge-primary">'+cont+'</span>'+ array[index].innerHTML +'</a>';
+   document.getElementsByTagName("h2")[index].id += 'go'+index;
+}
+      </script>
+    </div> 
+    </div>
+<div class="md-3">
+  <div class="  badge badge-info" style="font-size: 22px;">مواضيع ذات علاقة</div>
+
+<ul class="nav nav-tabs row justify-content-md-center" style="width: 312px;">
+  
+  {% for post in Category2 %}
+ <div class="row justify-content-md-center ">
+   
+  <div class="col-md-5 mt-2"><img class="bg-light read-more p-0" src="{{post.image.url}}" width="100px" height="70px"></div>
+  <div class="col-md-7 mt-2 read-more  shadow-lg "><a class=" fontd nav-link" href="{{post.get_absolute_url}}" style="padding: 0px;"> <span>
+    
+    {% if post.title|length > 40 %}
+    {{post.title|slice:'35'}} ..
+    {% else %}
+    {{post.title}}
+    {% endif %}
+  </span></a>
+ </div>
+ </div>
+  {% endfor %}
+</ul> 
+ 
+  
+  </div>
+
+</div>
+  </div>
+</div>
+
+<script>
+  function formExit() {
+    document.getElementById("newForm").remove();
+  }
+
+  function myFunction(id) {
+    if (document.contains(document.getElementById("newForm"))) {
+      document.getElementById("newForm").remove();
+    }
+
+    var d1 = document.getElementById(id);
+    d1.insertAdjacentHTML('afterend',
+      '<form id="newForm" class="form-insert py-2" method="post"> \
+                <div class="d-flex justify-content-between"><h2>Reply:</h2><div><button type="button" class="btn btn-outline-secondary" onclick="formExit()"">Close</button></div></div> \
+                <label for="id_name">Name:</label> \
+                <input type="text" name="name" class="col-sm-12" maxlength="50" required="" id="id_name">\
+                <select name="parent" class="d-none" id="id_parentt"> \
+                <option value="' + id + '" selected="' + id + '"></option> \
+                </select> \
+                <label for="id_email">Email:</label> \
+                <input type="text" name="email" class="col-sm-12" maxlength="254" required="" id="id_email"> \
+                <label for="id_content">Content:</label> \
+                <textarea name="content" cols="40" row justify-content-md-centers="5" class="form-control" required id="id_content"></textarea> \
+                {% csrf_token %} \
+                <button type="submit" class="btn btn-primary btn-lg btn-block">Submit</button> \
+              </form>');
+  }
+
+  $(document).ready(function () {
+    $('.thumbaction').click(function (e) {
+      e.preventDefault();
+      var postid = document.getElementById('thumbs').getAttribute('data-value');
+      var button = $(this).attr("value");
+      $.ajax({
+        type: 'POST',
+        url: '{% url "accounts:thumbs" %}',
+        data: {
+          postid: postid,
+          csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+          action: 'thumbs',
+          button: button,
+        },
+        success: function (json) {
+          if (json.length < 1 || json == undefined) {
+            //empty
+          }
+          document.getElementById("up").innerHTML = json['up']
+          document.getElementById("down").innerHTML = json['down']
+          $("svg").removeClass("thumb-active");
+
+          if (json['remove'] == 'none') {
+            $("#" + button).removeClass("thumb-active");
+          } else {
+            $("#" + button).addClass("thumb-active");
+          }
+
+        },
+        error: function (xhr, errmsg, err) {}
+      });
+    });
+  });
+
+  $('#myForm').trigger("reset");
+
+  $(document).on('click', '#like-button', function (e) {
+    e.preventDefault();
+    $.ajax({
+      type: 'POST',
+      url: '{% url "accounts:like" %}',
+      data: {
+        postid: $('#like-button').val(),
+        csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+        action: 'post'
+      },
+      success: function (json) {
+        document.getElementById("like_count").innerHTML = json['result']
+      },
+      error: function (xhr, errmsg, err) {
+
+      }
+    });
+  })
+</script>
+
+{% include "base/footer.html" %}
+{% endblock %}
